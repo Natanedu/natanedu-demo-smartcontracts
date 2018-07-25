@@ -9,7 +9,6 @@ contract Student {
     mapping(address => bool) blackListed;
     
     constructor() {
-        // constructor
     }
 
     function whiteList(address _studentAdd) public {
