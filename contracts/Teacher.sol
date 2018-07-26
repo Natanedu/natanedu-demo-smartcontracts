@@ -2,9 +2,9 @@ pragma solidity ^0.4.4;
 
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "./Control.sol";
 
-contract Teacher is Ownable {
+contract Teacher is Control {
 
     struct structTeacher {
         string firstName;
