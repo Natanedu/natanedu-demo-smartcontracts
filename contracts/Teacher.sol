@@ -6,6 +6,13 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 contract Teacher is Ownable {
 
+    struct structTeacher {
+        string firstName;
+        string lastName;
+        string region;
+        string topic;
+    }
+
     mapping(address => bool) whiteListed;
     mapping(address => bool) blackListed;
     
