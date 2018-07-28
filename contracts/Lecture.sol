@@ -19,4 +19,8 @@ contract Lecture {
         recordedLecture[_lectureId] = _ipfsHash;
     }
 
+    function getRecordedLecture(uint _lectureId) view public returns(string) {
+        return recordedLecture[_lectureId];
+    }
+
 }
