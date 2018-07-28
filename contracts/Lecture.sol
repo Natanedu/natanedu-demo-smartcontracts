@@ -4,7 +4,7 @@ pragma solidity ^0.4.4;
 contract Lecture {
 
     mapping(uint => bool) payedLecture;
-    mapping(uint => string) recordedLecture;
+    mapping(uint => bytes) recordedLecture;
     
     constructor() {
         // constructor
@@ -15,11 +15,11 @@ contract Lecture {
         payedLecture[_lectureId] = true;
     }
 
-    function saveRecordedLecture(uint _lectureId, string _ipfsHash) public {
+    function saveRecordedLecture(uint _lectureId, bytes _ipfsHash) public {
         recordedLecture[_lectureId] = _ipfsHash;
     }
 
-    function getRecordedLecture(uint _lectureId) view public returns(string) {
+    function getRecordedLecture(uint _lectureId) view public returns(bytes) {
         return recordedLecture[_lectureId];
     }
 
