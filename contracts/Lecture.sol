@@ -2,7 +2,12 @@ pragma solidity ^0.4.4;
 
 
 contract Lecture {
-  function Lecture() {
-    // constructor
-  }
+
+    mapping(uint => bool) payedLecture;
+    
+    constructor() {
+        // constructor
+    }
+
+    
 }
