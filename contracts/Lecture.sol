@@ -9,5 +9,8 @@ contract Lecture {
         // constructor
     }
 
-    
+    function payLecture(uint _lectureId, uint _lecturePrice) public payable {
+        require(msg.value == _lecturePrice);
+        payedLecture[_lectureId] = true;
+    }
 }
