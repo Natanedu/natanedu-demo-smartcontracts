@@ -48,7 +48,7 @@ contract Validator {
      * @param sig the signature
      */
     function splitSignature(bytes sig) internal pure returns (uint8, bytes32, bytes32) {
-        require(sig.length == 65);
+        require(sig.length == 65, "invalid signature length");
         
         bytes32 r;
         bytes32 s;
