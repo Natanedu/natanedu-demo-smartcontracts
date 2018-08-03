@@ -6,7 +6,7 @@ import "./utils/Control.sol";
 
 contract NatanTeacher is Control {
 
-    struct structTeacher {
+    struct Teacher {
         string firstName;
         string lastName;
         string region;
