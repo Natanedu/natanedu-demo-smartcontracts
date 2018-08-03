@@ -1,7 +1,7 @@
 pragma solidity ^0.4.4;
 
 
-contract Lecture {
+contract NatanLecture {
 
     mapping(uint => bool) payedLecture;
     mapping(uint => bytes) recordedLecture;
