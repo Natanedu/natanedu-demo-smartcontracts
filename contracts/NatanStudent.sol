@@ -2,7 +2,7 @@ pragma solidity ^0.4.4;
 
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "./Control.sol";
+import "./utils/Control.sol";
 import "./NatanLecture.sol";
 
 contract NatanStudent is Control, NatanLecture {
