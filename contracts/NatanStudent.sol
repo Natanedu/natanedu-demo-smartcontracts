@@ -7,7 +7,7 @@ import "./NatanLecture.sol";
 
 contract NatanStudent is Control, NatanLecture {
 
-    struct structTeacher {
+    struct Student {
         string firstName;
         string lastName;
     }
