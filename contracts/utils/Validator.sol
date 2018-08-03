@@ -17,13 +17,13 @@ contract Validator {
      * @param sig the signed hash
      */
     function isSigned(uint _lectureId, uint256 nonce, bytes sig) public {
-        require(!usedNonces[nonce]);
+        require(!usedNonces[nonce], "replayed message");
         usedNonces[nonce] = true;
 
         // This recreates the message that was signed on the client.
-        bytes32 message = prefixed(keccak256(msg.sender, _lectureId, nonce, this));
+        bytes32 message = prefixed(keccak256(abi.encodePacked(msg.sender, _lectureId, nonce, this)));
 
-        require(recoverSigner(message, sig) == msg.sender);
+        require(recoverSigner(message, sig) == msg.sender, "this is not the message's signer");
     }
 
     /**
