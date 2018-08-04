@@ -21,8 +21,8 @@ contract NatanLecture {
         accessLecture[_lectureId][msg.sender] = true;
     }
 
-    function getRecordedLecture(uint _lectureId) view public returns(bytes) {
-        require(accessLecture[_lectureId][msg.sender]);
+    function getRecordedLecture(uint _lectureId) public view returns(bytes) {
+        require(accessLecture[_lectureId][msg.sender], "no permission to access this lecture");
         return recordedLecture[_lectureId];
     }
 
