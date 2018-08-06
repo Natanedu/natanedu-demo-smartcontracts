@@ -14,9 +14,6 @@ contract NatanStudent is NatanControl, NatanLecture {
 
     mapping(address => bool) whiteListed;
     mapping(address => bool) blackListed;
-    
-    constructor() {
-    }
 
     /**
     * @dev function to whitelist a student

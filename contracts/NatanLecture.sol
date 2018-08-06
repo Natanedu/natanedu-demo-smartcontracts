@@ -7,9 +7,6 @@ contract NatanLecture {
     mapping(uint => bytes) recordedLecture;
     mapping(uint => mapping(address => bool)) accessLecture;
     
-    constructor() {
-        // constructor
-    }
 
     function payLecture(uint _lectureId, uint _lecturePrice) external payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
