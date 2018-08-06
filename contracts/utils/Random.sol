@@ -10,7 +10,7 @@ contract Random {
      * @return number id
      */
     function generateRandomId() public view returns (uint) {
-        uint lectureId = uint(keccak256(abi.encodePacked(block.difficulty, now)));
-        return lectureId;
+        //return  uint256(keccak256(abi.encodePacked(block.difficulty, now)));
+        return uint8(uint256(keccak256(block.timestamp, block.difficulty))%251);
     }
 }
