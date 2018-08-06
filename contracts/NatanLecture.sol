@@ -12,7 +12,7 @@ contract NatanLecture {
     }
 
     function payLecture(uint _lectureId, uint _lecturePrice) external payable {
-        require(msg.value == _lecturePrice);
+        require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
         payedLecture[_lectureId] = true;
     }
 
