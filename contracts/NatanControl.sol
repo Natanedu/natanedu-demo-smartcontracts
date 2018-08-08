@@ -25,7 +25,7 @@ contract NatanControl {
      * @dev Throws if called by any account other than the owner.
      */
     modifier onlyOwner() {
-        require(owners[msg.sender] == true);
+        require(owners[msg.sender] == true, "this account does not have admin privileges");
         _;
     }
 
