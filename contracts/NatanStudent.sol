@@ -5,6 +5,9 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./NatanControl.sol";
 import "./NatanLecture.sol";
 
+/**
+ * @title NatanStudent
+ */
 contract NatanStudent is NatanControl, NatanLecture {
 
     struct Student {
@@ -12,8 +15,8 @@ contract NatanStudent is NatanControl, NatanLecture {
         string lastName;
     }
 
-    mapping(address => bool) whiteListed;
-    mapping(address => bool) blackListed;
+    mapping(address => bool) whiteListed;       //mapping whitelisted student
+    mapping(address => bool) blackListed;       //mapping blacklisted student
 
     /**
     * @dev function to whitelist a student
