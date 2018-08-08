@@ -4,6 +4,9 @@ pragma solidity ^0.4.4;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./NatanControl.sol";
 
+/**
+ * @title NatanLecture
+ */
 contract NatanTeacher is NatanControl {
 
     struct Teacher {
@@ -13,8 +16,8 @@ contract NatanTeacher is NatanControl {
         string topic;
     }
 
-    mapping(address => bool) whiteListed;
-    mapping(address => bool) blackListed;
+    mapping(address => bool) whiteListed;       //mappping of whitelised teachers
+    mapping(address => bool) blackListed;       //mapping of blacklisted teachers
     
     /**
     * @dev function to whitelist a teacher
