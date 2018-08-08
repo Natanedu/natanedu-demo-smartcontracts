@@ -5,7 +5,7 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./NatanControl.sol";
 
 /**
- * @title NatanLecture
+ * @title NatanTeacher
  */
 contract NatanTeacher is NatanControl {
 
