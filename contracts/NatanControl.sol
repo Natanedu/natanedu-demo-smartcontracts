@@ -33,7 +33,7 @@ contract NatanControl {
      * @dev add new owner
      * @param newAllowed address of the new owner    
      */
-    function addOwner(address newAllowed) onlyOwner external {
+    function addOwner(address newAllowed) external onlyOwner {
         owners[newAllowed] = true;
     }
 
@@ -41,7 +41,7 @@ contract NatanControl {
      * @dev remove owner
      * @param toRemove owner that will be removed
      */
-    function removeOwner(address toRemove) onlyOwner external {
+    function removeOwner(address toRemove) external onlyOwner {
         owners[toRemove] = false;
     }
 
