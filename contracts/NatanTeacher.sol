@@ -16,10 +16,6 @@ contract NatanTeacher is NatanControl {
     mapping(address => bool) whiteListed;
     mapping(address => bool) blackListed;
     
-    constructor() {
-        // constructor
-    }
-
     /**
     * @dev function to whitelist a teacher
     * @param _teacherAdd address of teacher
