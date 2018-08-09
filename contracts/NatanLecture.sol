@@ -1,15 +1,26 @@
 pragma solidity ^0.4.4;
 
 
+import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+
 /**
  * @title NatanLecture
  */
 contract NatanLecture {
 
+    using SafeMath for uint256;
+
+    uint256 lecturesId = 0;     
+
     mapping(uint => mapping(address => bool)) payedLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
-    
+
+    function generateLectureId() public returns (uint256) {
+        lecturesId = lecturesId.add(1);
+        return lecturesId;
+    }
+
     /**
      * @dev function to pay for lecture
      * @param _lectureId id of lecture
