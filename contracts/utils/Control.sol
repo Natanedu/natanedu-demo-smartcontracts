@@ -30,22 +30,6 @@ contract Control {
     }
 
     /**
-     * @dev add new owner
-     * @param newAllowed address of the new owner    
-     */
-    function addOwner(address newAllowed) external onlyOwner {
-        owners[newAllowed] = true;
-    }
-
-    /**
-     * @dev remove owner
-     * @param toRemove owner that will be removed
-     */
-    function removeOwner(address toRemove) external onlyOwner {
-        owners[toRemove] = false;
-    }
-
-    /**
      * @dev Allows the current owner to relinquish control of the contract.
      */
     function renounceOwnership() external onlyOwner {
