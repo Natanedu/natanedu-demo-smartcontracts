@@ -15,6 +15,8 @@ contract NatanLecture {
     mapping(uint => mapping(address => bool)) payedLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
+    
+    mapping (address => uint) balance;
 
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
@@ -29,6 +31,7 @@ contract NatanLecture {
     function payLecture(uint _lectureId, uint _lecturePrice) external payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
         payedLecture[_lectureId][msg.sender] = true;
+        balance[msg.sender] += msg.value;
     }
 
     /**
