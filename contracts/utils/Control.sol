@@ -6,7 +6,7 @@ pragma solidity ^0.4.4;
  * @dev The controle contract has multiple owners addresses, and provides basic authorization 
  * control functions, this simplifies the implementation of "user permissions".
  */
-contract NatanControl {
+contract Control {
 
     mapping(address => bool) internal owners;
 
