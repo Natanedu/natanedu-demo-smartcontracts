@@ -16,7 +16,7 @@ contract NatanLecture {
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
     
-    mapping (address => uint) balance;
+    mapping (address => uint) teacherBalance;
 
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
@@ -31,7 +31,7 @@ contract NatanLecture {
     function payLecture(uint _lectureId, uint _lecturePrice) external payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
         payedLecture[_lectureId][msg.sender] = true;
-        balance[msg.sender] += msg.value;
+        teacherBalance[msg.sender] += msg.value;
     }
 
     /**
@@ -53,6 +53,13 @@ contract NatanLecture {
     function getRecordedLecture(uint _lectureId) public view returns(bytes) {
         require(accessLecture[_lectureId][msg.sender], "no permission to access this lecture");
         return recordedLecture[_lectureId];
+    }
+
+    function transfer(address _teacher, uint _amount) external {
+        require(_teacher != address(0), "invalid address");
+        require(teacherBalance[_teacher] >= _amount, "Teacher teacherBalance is insufficient");
+        _teacher.transfer(_amount);
+        teacherBalance[msg.sender].sub(_amount);
     }
 
 }
