@@ -56,6 +56,11 @@ contract NatanLecture {
         return recordedLecture[_lectureId];
     }
 
+    /**
+     * @dev function to tranfer money to specified teacher address
+     * @param _teacher teacher's address
+     * @param _amount amount to transfer in Wei
+     */
     function transfer(address _teacher, uint _amount) external {
         require(_teacher != address(0), "invalid address");
         require(teacherBalance[_teacher] >= _amount, "Teacher teacherBalance is insufficient");
