@@ -27,6 +27,7 @@ contract NatanLecture {
      * @dev function to pay for lecture
      * @param _lectureId id of lecture
      * @param _lecturePrice price of lecture
+     * @param _teacher address of the lecture's teacher
      */
     function payLecture(uint _lectureId, uint _lecturePrice, address _teacher) external payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
