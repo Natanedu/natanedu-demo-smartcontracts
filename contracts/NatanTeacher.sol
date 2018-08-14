@@ -3,16 +3,17 @@ pragma solidity ^0.4.4;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./utils/Control.sol";
+import "./NatanLecture.sol";
 
 /**
  * @title NatanTeacher
  */
-contract NatanTeacher is Control {
+contract NatanTeacher is Control, NatanLecture {
 
     struct Teacher {
         string firstName;
         string lastName;
-        string region;
+        string region; 
         string topic;
     }
 
@@ -35,6 +36,11 @@ contract NatanTeacher is Control {
     function blackList(address _teacherAdd) public onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         blackListed[_teacherAdd] = true;
+    }
+
+    function withdraw(uint _amount) private {
+        require(whiteListed[msg.sender] == true, "Teacher not authorized");
+        this.transfer(msg.sender, _amount);
     }
 
 }

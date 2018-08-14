@@ -63,9 +63,9 @@ contract NatanLecture {
      */
     function transfer(address _teacher, uint _amount) external {
         require(_teacher != address(0), "invalid address");
-        require(teacherBalance[_teacher] >= _amount, "Teacher teacherBalance is insufficient");
+        require(teacherBalance[_teacher] >= _amount, "Teacher balance is insufficient");
         _teacher.transfer(_amount);
-        teacherBalance[msg.sender].sub(_amount);
+        teacherBalance[msg.sender] = teacherBalance[msg.sender].sub(_amount);
     }
 
 }
