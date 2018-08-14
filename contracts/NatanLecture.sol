@@ -18,6 +18,8 @@ contract NatanLecture {
     
     mapping (address => uint) teacherBalance;
 
+    event teacherMoneyTrasfered(address indexed teacher);
+
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
         return lecturesId;
@@ -66,6 +68,7 @@ contract NatanLecture {
         require(teacherBalance[_teacher] >= _amount, "Teacher balance is insufficient");
         _teacher.transfer(_amount);
         teacherBalance[msg.sender] = teacherBalance[msg.sender].sub(_amount);
+        emit teacherMoneyTrasfered(_teacher);
     }
 
 }
