@@ -17,8 +17,8 @@ contract NatanTeacher is Control, NatanLecture {
         string topic;
     }
 
-    mapping(address => bool) whiteListed;       //mappping of whitelised teachers
-    mapping(address => bool) blackListed;       //mapping of blacklisted teachers
+    mapping(address => bool) public whiteListed;       //mappping of whitelised teachers
+    mapping(address => bool) public blackListed;       //mapping of blacklisted teachers
 
     event Transfer(address indexed teacher);
     
