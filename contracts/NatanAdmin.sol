@@ -13,16 +13,18 @@ contract NatanAdmin is Control {
      * @dev add new admin
      * @param newAllowed address of the new admin    
      */
-    function addAdmin(address newAllowed) external onlyOwner {
-        owners[newAllowed] = true;
+    function addAdmin(address _newAllowed) external onlyOwner {
+        require(_newAllowed != address(0), "invalid address");
+        owners[_newAllowed] = true;
     }
 
     /**
      * @dev remove admin
      * @param toRemove owner that will be removed
      */
-    function removeAdmin(address toRemove) external onlyOwner {
-        owners[toRemove] = false;
+    function removeAdmin(address _toRemove) external onlyOwner {
+        require(_toRemove != address(0), "invalid address");
+        owners[_toRemove] = false;
     }
 
 }
