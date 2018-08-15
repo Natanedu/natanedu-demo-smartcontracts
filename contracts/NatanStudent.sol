@@ -22,7 +22,7 @@ contract NatanStudent is Control, NatanLecture {
     * @dev function to whitelist a student
     * @param _studentAdd address of student
     */
-    function whiteList(address _studentAdd) public onlyOwner {
+    function whiteList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
         whiteListed[_studentAdd] = true;
     }
@@ -31,7 +31,7 @@ contract NatanStudent is Control, NatanLecture {
     * @dev function to blacklist a student
     * @param _studentAdd address of student
     */
-    function blackList(address _studentAdd) public onlyOwner {
+    function blackList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
         blackListed[_studentAdd] = true;
     }

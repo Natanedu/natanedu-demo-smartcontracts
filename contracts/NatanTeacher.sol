@@ -26,7 +26,7 @@ contract NatanTeacher is Control, NatanLecture {
     * @dev function to whitelist a teacher
     * @param _teacherAdd address of teacher
     */
-    function whiteList(address _teacherAdd) public onlyOwner {
+    function whiteList(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         whiteListed[_teacherAdd] = true;
     }
@@ -35,14 +35,14 @@ contract NatanTeacher is Control, NatanLecture {
     * @dev function to blacklist a teacher
     * @param _teacherAdd address of teacher
     */
-    function blackList(address _teacherAdd) public onlyOwner {
+    function blackList(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         blackListed[_teacherAdd] = true;
     }
 
-    function withdraw(uint _amount) private {
+    function withdraw(uint _amount) external {
         require(whiteListed[msg.sender] == true, "Teacher not authorized");
-        this.transfer(msg.sender, _amount);
+        transfer(msg.sender, _amount);
         emit Transfer(msg.sender);
     }
 

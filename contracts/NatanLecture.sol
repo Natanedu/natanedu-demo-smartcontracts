@@ -40,7 +40,7 @@ contract NatanLecture {
      * @param _lectureId id of lecture
      * @param _ipfsHash IPFS hash
      */
-    function saveRecordedLecture(uint _lectureId, bytes _ipfsHash) public {
+    function saveRecordedLecture(uint _lectureId, bytes _ipfsHash) internal {
         recordedLecture[_lectureId] = _ipfsHash;
         //restrict lecture access
         accessLecture[_lectureId][msg.sender] = true;
@@ -51,7 +51,7 @@ contract NatanLecture {
      * @param _lectureId id of lecture
      * @return IPFS hash
      */
-    function getRecordedLecture(uint _lectureId) public view returns(bytes) {
+    function getRecordedLecture(uint _lectureId) internal view returns(bytes) {
         require(accessLecture[_lectureId][msg.sender], "no permission to access this lecture");
         return recordedLecture[_lectureId];
     }
@@ -61,7 +61,7 @@ contract NatanLecture {
      * @param _teacher teacher's address
      * @param _amount amount to transfer in Wei
      */
-    function transfer(address _teacher, uint _amount) external {
+    function transfer(address _teacher, uint _amount) internal {
         require(_teacher != address(0), "invalid address");
         require(teacherBalance[_teacher] >= _amount, "Teacher balance is insufficient");
         _teacher.transfer(_amount);
