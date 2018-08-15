@@ -33,6 +33,8 @@ contract NatanStudent is Control, NatanLecture {
     */
     function blackList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
+        require(whiteListed[_studentAdd] == true, "student is not available");
+        whiteListed[_studentAdd] = false;
         blackListed[_studentAdd] = true;
     }
 
