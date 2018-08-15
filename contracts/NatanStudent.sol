@@ -15,8 +15,8 @@ contract NatanStudent is Control, NatanLecture {
         string lastName;
     }
 
-    mapping(address => bool) whiteListed;       //mapping whitelisted student
-    mapping(address => bool) blackListed;       //mapping blacklisted student
+    mapping(address => bool) public whiteListed;       //mapping whitelisted student
+    mapping(address => bool) public blackListed;       //mapping blacklisted student
 
     /**
     * @dev function to whitelist a student
