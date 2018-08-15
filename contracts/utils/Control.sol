@@ -8,7 +8,7 @@ pragma solidity ^0.4.4;
  */
 contract Control {
 
-    mapping(address => bool) internal owners;
+    mapping(address => bool) public owners;
 
     event OwnershipRenounced(address indexed previousOwner);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
