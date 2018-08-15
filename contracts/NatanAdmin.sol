@@ -24,6 +24,7 @@ contract NatanAdmin is Control {
      */
     function removeAdmin(address _toRemove) external onlyOwner {
         require(_toRemove != address(0), "invalid address");
+        require(owners[_toRemove] == true, "admin not found");
         owners[_toRemove] = false;
     }
 
