@@ -13,7 +13,7 @@ contract NatanAdmin is Control {
      * @dev add new admin
      * @param newAllowed address of the new admin    
      */
-    function addAdmin(address newAllowed) private onlyOwner {
+    function addAdmin(address newAllowed) internal onlyOwner {
         owners[newAllowed] = true;
     }
 
@@ -21,7 +21,7 @@ contract NatanAdmin is Control {
      * @dev remove admin
      * @param toRemove owner that will be removed
      */
-    function removeAdmin(address toRemove) private onlyOwner {
+    function removeAdmin(address toRemove) internal onlyOwner {
         owners[toRemove] = false;
     }
 
