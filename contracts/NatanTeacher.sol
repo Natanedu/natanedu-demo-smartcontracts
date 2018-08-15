@@ -19,6 +19,8 @@ contract NatanTeacher is Control, NatanLecture {
 
     mapping(address => bool) whiteListed;       //mappping of whitelised teachers
     mapping(address => bool) blackListed;       //mapping of blacklisted teachers
+
+    event Transfer(address indexed teacher);
     
     /**
     * @dev function to whitelist a teacher
@@ -41,6 +43,7 @@ contract NatanTeacher is Control, NatanLecture {
     function withdraw(uint _amount) private {
         require(whiteListed[msg.sender] == true, "Teacher not authorized");
         this.transfer(msg.sender, _amount);
+        emit Transfer(msg.sender);
     }
 
 }

@@ -15,10 +15,8 @@ contract NatanLecture {
     mapping(uint => mapping(address => bool)) payedLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
-    
-    mapping (address => uint) teacherBalance;
+    mapping(address => uint) teacherBalance;
 
-    event teacherMoneyTrasfered(address indexed teacher);
 
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
@@ -68,7 +66,6 @@ contract NatanLecture {
         require(teacherBalance[_teacher] >= _amount, "Teacher balance is insufficient");
         _teacher.transfer(_amount);
         teacherBalance[msg.sender] = teacherBalance[msg.sender].sub(_amount);
-        emit teacherMoneyTrasfered(_teacher);
     }
 
 }
