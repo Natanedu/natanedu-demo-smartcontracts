@@ -10,6 +10,8 @@ import "./utils/Control.sol";
  */
 contract NatanTeacher is Control {
 
+    using SafeMath for uint256;
+
     event Transfer(address indexed teacher);
 
     struct Teacher {
@@ -43,10 +45,15 @@ contract NatanTeacher is Control {
         blackListedTeacher[_teacherAdd] = true;
     }
 
-    function withdraw(uint _amount) external {
-        require(whiteListedTeacher[msg.sender] == true, "Teacher not authorized");
-        transfer(msg.sender, _amount);
-        emit Transfer(msg.sender);
+    /**
+     * @dev function to withdraw money
+     * @param _teacher teacher address
+     * @param _amount amount to transfer in Wei
+     */
+    function withdraw(address _teacher, uint _amount) internal {
+        _teacher.transfer(_amount);
+        teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
+        emit Transfer(_teacher);
     }
 
 }

@@ -12,12 +12,14 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     using SafeMath for uint256;
 
-    uint256 lecturesId = 0;     
+    uint256 lecturesId = 0; 
+
+    event Transfer(address indexed teacher);    
 
     mapping(uint => mapping(address => bool)) payedLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
-    mapping(address => uint) teacherBalance;
+    
 
 
     function generateLectureId() public returns (uint256) {
@@ -60,14 +62,13 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     /**
      * @dev function to tranfer money to specified teacher address
-     * @param _teacher teacher's address
      * @param _amount amount to transfer in Wei
      */
-    function transfer(address _teacher, uint _amount) internal {
-        require(_teacher != address(0), "invalid address");
-        require(teacherBalance[_teacher] >= _amount, "Teacher balance is insufficient");
-        _teacher.transfer(_amount);
-        teacherBalance[msg.sender] = teacherBalance[msg.sender].sub(_amount);
+    function transfer(uint _amount) public {
+        require(whiteListedTeacher[msg.sender] == true, "Teacher not authorized");
+        require(teacherBalance[msg.sender] >= _amount, "Teacher balance is insufficient");
+
+        withdraw(msg.sender, _amount);
     }
 
 }
