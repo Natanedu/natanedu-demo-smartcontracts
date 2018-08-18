@@ -14,7 +14,8 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     uint256 lecturesId = 0; 
 
-    event Transfer(address indexed teacher);    
+    event Transfer(address indexed teacher);
+    event lecturePaid(address indexed teacher, address indexed student, uint256 lectureId);    
 
     mapping(uint => mapping(address => bool)) paidLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
@@ -38,6 +39,8 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
         paidLecture[_lectureId][msg.sender] = true;
         teacherBalance[_teacher] += msg.value;
+
+        emit lecturePaid(_teacher, msg.sender, _lectureId);
     }
 
     /**
