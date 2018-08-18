@@ -10,6 +10,9 @@ import "./utils/Control.sol";
  */
 contract NatanStudent is Control {
 
+    event Whitelisted(address indexed student);
+    event Blacklisted(address indexed student);
+
     struct Student {
         string firstName;
         string lastName;
@@ -25,6 +28,8 @@ contract NatanStudent is Control {
     function whiteList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
         whiteListedStudent[_studentAdd] = true;
+
+        emit Whitelisted(_studentAdd);
     }
 
     /**
@@ -36,6 +41,8 @@ contract NatanStudent is Control {
         require(whiteListedStudent[_studentAdd] == true, "student is not available");
         whiteListedStudent[_studentAdd] = false;
         blackListedStudent[_studentAdd] = true;
+
+        emit Blacklisted(_studentAdd);
     }
 
 }
