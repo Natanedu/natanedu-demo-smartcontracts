@@ -10,6 +10,8 @@ import "./utils/Control.sol";
  */
 contract NatanTeacher is Control {
 
+    event Transfer(address indexed teacher);
+
     struct Teacher {
         string firstName;
         string lastName;
@@ -17,10 +19,9 @@ contract NatanTeacher is Control {
         string topic;
     }
 
-    mapping(address => bool) public whiteListed;       //mappping of whitelised teachers
-    mapping(address => bool) public blackListed;       //mapping of blacklisted teachers
-
-    event Transfer(address indexed teacher);
+    mapping(address => bool) public whiteListedTeacher;       //mappping of white listed teachers
+    mapping(address => bool) public blackListedTeacher;       //mapping of black listed teachers
+    mapping(address => uint) public teacherBalance;    //teacher balance  
     
     /**
     * @dev function to whitelist a teacher
@@ -28,7 +29,7 @@ contract NatanTeacher is Control {
     */
     function whiteList(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
-        whiteListed[_teacherAdd] = true;
+        whiteListedTeacher[_teacherAdd] = true;
     }
 
     /**
@@ -37,13 +38,13 @@ contract NatanTeacher is Control {
     */
     function blackList(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
-        require(whiteListed[_teacherAdd] == true, "Teacher is not available");
-        whiteListed[_teacherAdd] = false;
-        blackListed[_teacherAdd] = true;
+        require(whiteListedTeacher[_teacherAdd] == true, "Teacher is not available");
+        whiteListedTeacher[_teacherAdd] = false;
+        blackListedTeacher[_teacherAdd] = true;
     }
 
     function withdraw(uint _amount) external {
-        require(whiteListed[msg.sender] == true, "Teacher not authorized");
+        require(whiteListedTeacher[msg.sender] == true, "Teacher not authorized");
         transfer(msg.sender, _amount);
         emit Transfer(msg.sender);
     }
