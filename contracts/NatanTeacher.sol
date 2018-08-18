@@ -13,6 +13,8 @@ contract NatanTeacher is Control {
     using SafeMath for uint256;
 
     event Transfer(address indexed teacher);
+    event Whitelisted(address indexed teacher);
+    event Blacklisted(address indexed teacher);
 
     struct Teacher {
         string firstName;
@@ -23,7 +25,7 @@ contract NatanTeacher is Control {
 
     mapping(address => bool) public whiteListedTeacher;       //mappping of white listed teachers
     mapping(address => bool) public blackListedTeacher;       //mapping of black listed teachers
-    mapping(address => uint) public teacherBalance;    //teacher balance  
+    mapping(address => uint) public teacherBalance;           //teacher balance  
     
     /**
     * @dev function to whitelist a teacher
@@ -32,6 +34,8 @@ contract NatanTeacher is Control {
     function whiteList(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         whiteListedTeacher[_teacherAdd] = true;
+
+        emitWhitelisted (_teacherAdd);
     }
 
     /**
@@ -43,6 +47,8 @@ contract NatanTeacher is Control {
         require(whiteListedTeacher[_teacherAdd] == true, "Teacher is not available");
         whiteListedTeacher[_teacherAdd] = false;
         blackListedTeacher[_teacherAdd] = true;
+
+        emit Blacklisted(_teacherAdd);
     }
 
     /**
@@ -53,6 +59,7 @@ contract NatanTeacher is Control {
     function withdraw(address _teacher, uint _amount) internal {
         _teacher.transfer(_amount);
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
+        
         emit Transfer(_teacher);
     }
 
