@@ -16,11 +16,9 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     event Transfer(address indexed teacher);    
 
-    mapping(uint => mapping(address => bool)) payedLecture;     //mapping lecture id to address who payed for it
+    mapping(uint => mapping(address => bool)) paidLecture;     //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
-    
-
 
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
@@ -33,9 +31,12 @@ contract NatanLecture is NatanStudent, NatanTeacher {
      * @param _lecturePrice price of lecture
      * @param _teacher address of the lecture's teacher
      */
-    function payLecture(uint _lectureId, uint _lecturePrice, address _teacher) external payable {
+    function payLecture(uint _lectureId, uint _lecturePrice, address _teacher) public payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
-        payedLecture[_lectureId][msg.sender] = true;
+        require(_teacher != address(0), "invalid teacher address");
+        require(whiteListedTeacher[_teacher] == true, "teacher not found");
+
+        paidLecture[_lectureId][msg.sender] = true;
         teacherBalance[_teacher] += msg.value;
     }
 
