@@ -35,7 +35,7 @@ contract NatanTeacher is Control {
         require(_teacherAdd != address(0), "Invalid address");
         whiteListedTeacher[_teacherAdd] = true;
 
-        emitWhitelisted (_teacherAdd);
+        emit Whitelisted(_teacherAdd);
     }
 
     /**
@@ -59,7 +59,7 @@ contract NatanTeacher is Control {
     function withdraw(address _teacher, uint _amount) internal {
         _teacher.transfer(_amount);
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
-        
+
         emit Transfer(_teacher);
     }
 
