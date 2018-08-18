@@ -2,11 +2,13 @@ pragma solidity ^0.4.4;
 
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
+import "./NatanStudent.sol";
+import "./NatanTeacher.sol";
 
 /**
  * @title NatanLecture
  */
-contract NatanLecture {
+contract NatanLecture is NatanStudent, NatanTeacher {
 
     using SafeMath for uint256;
 

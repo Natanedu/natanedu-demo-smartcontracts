@@ -3,12 +3,12 @@ pragma solidity ^0.4.4;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./utils/Control.sol";
-import "./NatanLecture.sol";
+//import "./NatanLecture.sol";
 
 /**
  * @title NatanTeacher
  */
-contract NatanTeacher is Control, NatanLecture {
+contract NatanTeacher is Control {
 
     struct Teacher {
         string firstName;
