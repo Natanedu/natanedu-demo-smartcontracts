@@ -15,8 +15,8 @@ contract NatanStudent is Control {
         string lastName;
     }
 
-    mapping(address => bool) public whiteListed;       //mapping whitelisted student
-    mapping(address => bool) public blackListed;       //mapping blacklisted student
+    mapping(address => bool) public whiteListedStudent;       //mapping white listed student
+    mapping(address => bool) public blackListedStudent;       //mapping black listed student
 
     /**
     * @dev function to whitelist a student
@@ -24,7 +24,7 @@ contract NatanStudent is Control {
     */
     function whiteList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
-        whiteListed[_studentAdd] = true;
+        whiteListedStudent[_studentAdd] = true;
     }
 
     /**
@@ -33,9 +33,9 @@ contract NatanStudent is Control {
     */
     function blackList(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
-        require(whiteListed[_studentAdd] == true, "student is not available");
-        whiteListed[_studentAdd] = false;
-        blackListed[_studentAdd] = true;
+        require(whiteListedStudent[_studentAdd] == true, "student is not available");
+        whiteListedStudent[_studentAdd] = false;
+        blackListedStudent[_studentAdd] = true;
     }
 
 }
