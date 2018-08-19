@@ -14,7 +14,6 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     uint256 lecturesId = 0; 
 
-    event Transfer(address indexed teacher);
     event lecturePaid(address indexed teacher, address indexed student, uint256 lectureId);    
 
     mapping(uint => mapping(address => bool)) paidLecture;     //mapping lecture id to address who payed for it

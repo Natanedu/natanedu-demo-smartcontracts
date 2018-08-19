@@ -13,8 +13,8 @@ contract NatanTeacher is Control {
     using SafeMath for uint256;
 
     event Transfer(address indexed teacher);
-    event Whitelisted(address indexed teacher);
-    event Blacklisted(address indexed teacher);
+    event TeacherWhitelisted(address indexed teacher);
+    event TeacherBlacklisted(address indexed teacher);
 
     struct Teacher {
         string firstName;
@@ -31,24 +31,24 @@ contract NatanTeacher is Control {
     * @dev function to whitelist a teacher
     * @param _teacherAdd address of teacher
     */
-    function whiteList(address _teacherAdd) external onlyOwner {
+    function whiteListTeacher(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         whiteListedTeacher[_teacherAdd] = true;
 
-        emit Whitelisted(_teacherAdd);
+        emit TeacherWhitelisted(_teacherAdd);
     }
 
     /**
     * @dev function to blacklist a teacher
     * @param _teacherAdd address of teacher
     */
-    function blackList(address _teacherAdd) external onlyOwner {
+    function blackListTeacher(address _teacherAdd) external onlyOwner {
         require(_teacherAdd != address(0), "Invalid address");
         require(whiteListedTeacher[_teacherAdd] == true, "Teacher is not available");
         whiteListedTeacher[_teacherAdd] = false;
         blackListedTeacher[_teacherAdd] = true;
 
-        emit Blacklisted(_teacherAdd);
+        emit TeacherBlacklisted(_teacherAdd);
     }
 
     /**
