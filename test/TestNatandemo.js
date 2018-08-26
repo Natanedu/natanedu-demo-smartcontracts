@@ -1,7 +1,15 @@
+import {
+    hashMessage,
+    signMessage,
+    signHex
+} from './helpers/sign';
+  
+var EthereumAbi = require('ethereumjs-abi')
+var EthUtil = require('ethereumjs-util');
+var Web3 = require('web3');
+
 const NatanAdmin = artifacts.require("NatanAdmin");
 const NatanLecture = artifacts.require("NatanLecture");
-const NatanStudent = artifacts.require("NatanStudent");
-const NatanTeacher = artifacts.require("NatanTeacher");
 
 const logTitle = function (title) {
   console.log("*****************************************");
@@ -15,12 +23,41 @@ const logError = function (err) {
   console.log("-----------------------------------------");
 }
 
+/**
+ * @dev function to sign message (lecture id)
+ * @param _student student address
+ * @param _lectureId id of the lecture
+ * @param _nonce any unique number, used to prevent replay attacks
+ * @param _contractAddress is used to prevent cross-contract replay attakcs
+ */
+const signLecture = function(_student, _lectureId, _nonce, _contractAddress) {
+
+    var hash = "0x" + EthereumAbi.soliditySHA3(
+      ["address", "uint256", "uint256", "address"],
+      [_student, _lectureId, _nonce, _contractAddress]
+    ).toString("hex");
+
+    //web3.personal.sign(hash, web3.eth.defaultAccount, callback);*/
+
+    const message = String(_student) + String(_lectureId) + String(_nonce) + String(_contractAddress);
+    //let hash2 = hashMessage(message);
+    //console.log("hash: " + hash2);
+
+    //let signature = signHex(_student, hash);
+    let signature = signMessage(_student, message);
+    return signature;
+}
+  
+
 contract('Natan Demo Smart Contracts', (accounts) => {
 
     let natanAdminContract;
-    let natanStudentContract;
-    let natanTeacherContract;
     let natanLectureContract;
+
+    let admin;
+    let teacher1;
+    let student1;
+    let student2;
 
     before(async() => {
         admin = accounts[0];
@@ -29,12 +66,10 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         student2 = accounts[3];
 
         natanAdminContract = await NatanAdmin.new({from: admin});
-        natanStudentContract = await NatanStudent.new({from: admin});
-        natanTeacherContract = await NatanTeacher.new({from: admin});
         natanLectureContract = await NatanLecture.new({from: admin});
     });
 
-    describe("Add/Remove admins", async () => {
+    /*describe("Add/Remove admins", async () => {
 
         it("Assign new admin", async () => {
             await natanAdminContract.addAdmin(accounts[4], {from: admin});
@@ -100,16 +135,16 @@ contract('Natan Demo Smart Contracts', (accounts) => {
     describe("Whitelist/Blacklist student", async () => {
 
         it("Whitelist a student", async () => {
-            await natanStudentContract.whiteList(student1, {from: admin});
-            natanStudentContract.whiteListed(student1).then((res) => {
+            await natanLectureContract.whiteListStudent(student1, {from: admin});
+            natanLectureContract.whiteListedStudent(student1).then((res) => {
                 assert.equal(res, true);
             });
         });
 
         it("Blacklist a student", async () => {
-            await natanStudentContract.blackList(student1, {from: admin});
-            natanStudentContract.blackListed(student1).then((res1) => {
-                natanStudentContract.whiteListed(student1).then((res2) => {
+            await natanLectureContract.blackListStudent(student1, {from: admin});
+            natanLectureContract.blackListedStudent(student1).then((res1) => {
+                natanLectureContract.whiteListedStudent(student1).then((res2) => {
                     assert.equal(res1, true);
                     assert.equal(res2, false);
                 });
@@ -118,7 +153,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to whitelist a student from unauthorized address', async() => {
             try {
-                await natanStudentContract.whiteList(student1, {from: accounts[9]});
+                await natanLectureContract.whiteListStudent(student1, {from: accounts[9]});
             } catch (error) {
                 return true;
             }
@@ -127,7 +162,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to whitelist student with invalid address', async() => {
             try {
-                await natanStudentContract.whiteList(0, {from: admin});
+                await natanLectureContract.whiteListStudent(0, {from: admin});
             } catch (error) {
                 return true;
             }
@@ -136,7 +171,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist a student from unauthorized address', async() => {
             try {
-                await natanStudentContract.blackList(student1, {from: accounts[9]});
+                await natanLectureContract.blackListStudent(student1, {from: accounts[9]});
             } catch (error) {
                 return true;
             }
@@ -145,7 +180,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist student with invalid address', async() => {
             try {
-                await natanStudentContract.blackList(0, {from: admin});
+                await natanLectureContract.blackListStudent(0, {from: admin});
             } catch (error) {
                 return true;
             }
@@ -154,7 +189,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist student that is not whitelisted', async() => {
             try {
-                await natanStudentContract.blackList(student2, {from: admin});
+                await natanLectureContract.blackListStudent(student2, {from: admin});
             } catch (error) {
                 return true;
             }
@@ -166,16 +201,16 @@ contract('Natan Demo Smart Contracts', (accounts) => {
     describe("Whitelist/Blacklist teacher", async () => {
 
         it("Whitelist a teacher", async () => {
-            await natanTeacherContract.whiteList(teacher1, {from: admin});
-            natanTeacherContract.whiteListed(teacher1).then((res) => {
+            await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
+            natanLectureContract.whiteListedTeacher(teacher1).then((res) => {
                 assert.equal(res, true);
             });
         });
 
         it("Blacklist a teacher", async () => {
-            await natanTeacherContract.blackList(teacher1, {from: admin});
-            natanTeacherContract.blackListed(teacher1).then((res1) => {
-                natanTeacherContract.whiteListed(teacher1).then((res2) => {
+            await natanLectureContract.blackListTeacher(teacher1, {from: admin});
+            natanLectureContract.blackListedTeacher(teacher1).then((res1) => {
+                natanLectureContract.whiteListedTeacher(teacher1).then((res2) => {
                     assert.equal(res1, true);
                     assert.equal(res2, false);
                 });
@@ -184,7 +219,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to whitelist a teacher from unauthorized address', async() => {
             try {
-                await natanTeacherContract.whiteList(teacher1, {from: accounts[9]});
+                await natanLectureContract.whiteListTeacher(teacher1, {from: accounts[9]});
             } catch (error) {
                 return true;
             }
@@ -193,7 +228,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to whitelist teacher with invalid address', async() => {
             try {
-                await natanTeacherContract.whiteList(0, {from: admin});
+                await natanLectureContract.whiteListTeacher(0, {from: admin});
             } catch (error) {
                 return true;
             }
@@ -202,7 +237,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist a teacher from unauthorized address', async() => {
             try {
-                await natanTeacherContract.blackList(teacher, {from: accounts[9]});
+                await natanLectureContract.blackListTeacher(teacher, {from: accounts[9]});
             } catch (error) {
                 return true;
             }
@@ -211,7 +246,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist teacher with invalid address', async() => {
             try {
-                await natanTeacherContract.blackList(0, {from: admin});
+                await natanLectureContract.blackListTeacher(0, {from: admin});
             } catch (error) {
                 return true;
             }
@@ -220,13 +255,42 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to blacklist teacher that is not whitelisted', async() => {
             try {
-                await natanTeacherContract.blackList(accounts[8], {from: admin});
+                await natanLectureContract.blackListTeacher(accounts[8], {from: admin});
             } catch (error) {
                 return true;
             }
             throw new Error("I should never see this!")
         });
 
+    });*/
+
+    describe("Lecture", async () => {
+
+        let lectureId = 0;
+        
+        before(async() => {
+            //whitelist student
+            await natanLectureContract.whiteListStudent(student1, {from: admin});
+
+            //whitelist teacher
+            await natanLectureContract.whiteListStudent(student1, {from: admin});
+        });
+
+        it("generate lecture id", async () => {
+            //generate lecture idlet
+            await natanLectureContract.generateLectureId({from : student1});
+            natanLectureContract.lecturesId.call().then((res) => {
+                lectureId = res.toNumber();
+                assert.equal(lectureId, 1);
+            });
+        });
+
+        it("sign lecture id by student", async () => {
+            let nonce = String(student1) + String(lectureId);
+
+            let sig = signLecture(student1, lectureId, nonce, natanLectureContract.address);
+            console.log("sig: " + sig);
+        });
     });
 
 });

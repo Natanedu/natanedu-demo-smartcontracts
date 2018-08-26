@@ -1,4 +1,6 @@
 import utils from 'ethereumjs-util';
+var Web3 = require('web3')
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
 /**
  * Hash and add same prefix to the hash that ganache use.
@@ -13,7 +15,7 @@ export const hashMessage = (message) => {
 
 // signs message using web3 (auto-applies prefix)
 export const signMessage = (signer, message = '', options = {}) => {
-  return web3.eth.sign(signer, web3.sha3(message, options));
+  return web3.eth.sign(signer, web3.utils.sha3(message, options));
 };
 
 // signs hex string using web3 (auto-applies prefix)
