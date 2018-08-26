@@ -12,7 +12,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     using SafeMath for uint256;
 
-    uint256 lecturesId = 0; 
+    uint256 public lecturesId = 0; 
 
     event lecturePaid(address indexed teacher, address indexed student, uint256 lectureId);    
 
