@@ -23,17 +23,30 @@ contract NatanTeacher is Control {
         string topic;
     }
 
-    mapping(address => bool) public whiteListedTeacher;       //mappping of white listed teachers
-    mapping(address => bool) public blackListedTeacher;       //mapping of black listed teachers
-    mapping(address => uint) public teacherBalance;           //teacher balance  
+    //List of teachers
+    mapping(address => Teacher) public teachers; 
+
+    /** 
+     * Listed teachers:
+     * 1 = blacklisted
+     * 2 = in process
+     * 3 = whitelisted  
+     */ 
+    mapping(address => uint) public listedTeachers;      
+
+    //Teacher balance
+    mapping(address => uint) public teacherBalance;             
     
     /**
     * @dev function to whitelist a teacher
     * @param _teacherAdd address of teacher
     */
     function whiteListTeacher(address _teacherAdd) external onlyOwner {
+        //require valid address
         require(_teacherAdd != address(0), "Invalid address");
-        whiteListedTeacher[_teacherAdd] = true;
+        
+        //whitelist teacher
+        listedTeachers[_teacherAdd] = 3;
 
         emit TeacherWhitelisted(_teacherAdd);
     }
@@ -43,10 +56,13 @@ contract NatanTeacher is Control {
     * @param _teacherAdd address of teacher
     */
     function blackListTeacher(address _teacherAdd) external onlyOwner {
+        //require valid address
         require(_teacherAdd != address(0), "Invalid address");
-        require(whiteListedTeacher[_teacherAdd] == true, "Teacher is not available");
-        whiteListedTeacher[_teacherAdd] = false;
-        blackListedTeacher[_teacherAdd] = true;
+        //require that teacher is already whitelisted or in process
+        require((listedTeachers[_teacherAdd] == 3) || (listedTeachers[_teacherAdd] == 2), "Teacher is not available");
+        
+        //blacklist teacher
+        listedTeachers[_teacherAdd] = 1;
 
         emit TeacherBlacklisted(_teacherAdd);
     }
