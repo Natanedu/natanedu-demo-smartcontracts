@@ -1,23 +1,19 @@
-import {
-    hashMessage,
-    signMessage,
-    signHex
-} from './helpers/sign';
-  
-var EthereumAbi = require('ethereumjs-abi')
-var EthUtil = require('ethereumjs-util');
-var Web3 = require('web3');
+const EthereumAbi = require('ethereumjs-abi')
+const EthUtil = require('ethereumjs-util');
+const { getWeb3, hashMessage, signMessage, signHex } = require('./helpers/sign');
 
 const NatanAdmin = artifacts.require("NatanAdmin");
 const NatanLecture = artifacts.require("NatanLecture");
 
-const logTitle = function (title) {
+var web3_1_0 = getWeb3();
+
+const logTitle = (title) => {
   console.log("*****************************************");
   console.log(title);
   console.log("*****************************************");
 }
 
-const logError = function (err) {
+const logError = (err) => {
   console.log("-----------------------------------------");
   console.log(err);
   console.log("-----------------------------------------");
@@ -30,22 +26,17 @@ const logError = function (err) {
  * @param _nonce any unique number, used to prevent replay attacks
  * @param _contractAddress is used to prevent cross-contract replay attakcs
  */
-const signLecture = function(_student, _lectureId, _nonce, _contractAddress) {
+const signLecture = (web3_1_0) => (_student, _lectureId, _nonce, _contractAddress) => {
 
-    var hash = "0x" + EthereumAbi.soliditySHA3(
+    let hash = "0x" + EthereumAbi.soliditySHA3(
       ["address", "uint256", "uint256", "address"],
       [_student, _lectureId, _nonce, _contractAddress]
     ).toString("hex");
 
-    //web3.personal.sign(hash, web3.eth.defaultAccount, callback);*/
-
-    const message = String(_student) + String(_lectureId) + String(_nonce) + String(_contractAddress);
-    //let hash2 = hashMessage(message);
-    //console.log("hash: " + hash2);
-
-    //let signature = signHex(_student, hash);
-    let signature = signMessage(_student, message);
-    return signature;
+    web3_1_0.personal.sign(hash, _student).then((sig) => {
+        return sig;
+    });
+    
 }
   
 
@@ -288,8 +279,19 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         it("sign lecture id by student", async () => {
             let nonce = String(student1) + String(lectureId);
 
-            let sig = signLecture(student1, lectureId, nonce, natanLectureContract.address);
-            console.log("sig: " + sig);
+            /*signLecture(student1, lectureId, nonce, natanLectureContract.address).then((res) => {
+                console.log(res);
+            });*/
+
+            //let signature = signLecture(student1, lectureId, nonce, natanLectureContract.address);
+            
+            let hash = "0x" + EthereumAbi.soliditySHA3(
+                ["address", "uint256", "uint256", "address"],
+                [student1, lectureId, nonce, natanLectureContract.address]
+            ).toString("hex");
+
+            let signature = await web3_1_0.personal.sign('0x7AE779CB32e727DfF39859Eb57Bb5c4868bd4892', hash);
+            console.log(signature);          
         });
     });
 
