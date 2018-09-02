@@ -3,7 +3,6 @@ pragma solidity ^0.4.4;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./utils/Control.sol";
-//import "./NatanLecture.sol";
 
 /**
  * @title NatanTeacher
@@ -38,12 +37,13 @@ contract NatanTeacher is Control {
     mapping(address => uint) public teacherBalance;             
     
     /**
-    * @dev function to whitelist a teacher
-    * @param _teacherAdd address of teacher
-    */
+     * @dev function to whitelist a teacher
+     * @param _teacherAdd address of teacher
+     */
     function whiteListTeacher(address _teacherAdd) external onlyOwner {
         //require valid address
         require(_teacherAdd != address(0), "Invalid address");
+        require(listedTeachers[_teacherAdd] == 2, "Teacher not found!");
         
         //whitelist teacher
         listedTeachers[_teacherAdd] = 3;
@@ -52,9 +52,9 @@ contract NatanTeacher is Control {
     }
 
     /**
-    * @dev function to blacklist a teacher
-    * @param _teacherAdd address of teacher
-    */
+     * @dev function to blacklist a teacher
+     * @param _teacherAdd address of teacher
+     */
     function blackListTeacher(address _teacherAdd) external onlyOwner {
         //require valid address
         require(_teacherAdd != address(0), "Invalid address");
