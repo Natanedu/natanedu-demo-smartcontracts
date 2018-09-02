@@ -34,7 +34,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
     function payLecture(uint _lectureId, uint _lecturePrice, address _teacher) public payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
         require(_teacher != address(0), "invalid teacher address");
-        require(whiteListedTeacher[_teacher] == true, "teacher not found");
+        require(listedTeachers[_teacher] == 3, "teacher not found");
 
         paidLecture[_lectureId][msg.sender] = true;
         teacherBalance[_teacher] += msg.value;
@@ -68,7 +68,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
      * @param _amount amount to transfer in Wei
      */
     function transfer(uint _amount) public {
-        require(whiteListedTeacher[msg.sender] == true, "Teacher not authorized");
+        require(listedTeachers[msg.sender] == 3, "Teacher not authorized");
         require(teacherBalance[msg.sender] >= _amount, "Teacher balance is insufficient");
 
         withdraw(msg.sender, _amount);
