@@ -60,7 +60,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         natanLectureContract = await NatanLecture.new({from: admin});
     });
 
-    /*describe("Add/Remove admins", async () => {
+    describe("Add/Remove admins", async () => {
 
         it("Assign new admin", async () => {
             await natanAdminContract.addAdmin(accounts[4], {from: admin});
@@ -123,7 +123,35 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     });
 
-    describe("Whitelist/Blacklist student", async () => {
+    describe("Register student", async () => {
+
+        it("student sign in", async () => {
+            await natanLectureContract.registerStudent(student1, "student1", "student1");
+            natanLectureContract.listedStudents(student1).then((res) => {
+                assert.equal(res.toNumber(), 2);
+            });
+        });
+
+        it('should FAIL to sig in if already registered', async() => {
+            try {
+                await natanLectureContract.registerStudent(student1, "student1", "student1");
+            } catch (error) {
+                return true;
+            }
+            throw new Error("I should never see this!")
+        });
+
+        it('should FAIL to sig in with invalid address', async() => {
+            try {
+                await natanLectureContract.registerStudent(0, "student1", "student1");
+            } catch (error) {
+                return true;
+            }
+            throw new Error("I should never see this!")
+        });
+    });
+
+    /*describe("Whitelist/Blacklist student", async () => {
 
         it("Whitelist a student", async () => {
             await natanLectureContract.whiteListStudent(student1, {from: admin});
@@ -255,7 +283,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     });*/
 
-    describe("Lecture", async () => {
+    /*describe("Lecture", async () => {
 
         let lectureId = 0;
         
@@ -279,9 +307,9 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         it("sign lecture id by student", async () => {
             let nonce = String(student1) + String(lectureId);
 
-            /*signLecture(student1, lectureId, nonce, natanLectureContract.address).then((res) => {
-                console.log(res);
-            });*/
+            //signLecture(student1, lectureId, nonce, natanLectureContract.address).then((res) => {
+                //console.log(res);
+            //});
 
             //let signature = signLecture(student1, lectureId, nonce, natanLectureContract.address);
             
@@ -293,6 +321,6 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             let signature = await web3_1_0.personal.sign('0x7AE779CB32e727DfF39859Eb57Bb5c4868bd4892', hash);
             console.log(signature);          
         });
-    });
+    });*/
 
 });
