@@ -132,7 +132,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             });
         });
 
-        it('should FAIL to sig in if already registered', async() => {
+        it('should FAIL to sign in if already registered', async() => {
             try {
                 await natanLectureContract.registerStudent(student1, "student1", "student1");
             } catch (error) {
@@ -141,7 +141,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             throw new Error("I should never see this!")
         });
 
-        it('should FAIL to sig in with invalid address', async() => {
+        it('should FAIL to sign in with invalid address', async() => {
             try {
                 await natanLectureContract.registerStudent(0, "student1", "student1");
             } catch (error) {
@@ -212,6 +212,34 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             throw new Error("I should never see this!")
         });
 
+    });
+
+    describe("Register teacher", async () => {
+
+        it("teacher sign in", async () => {
+            await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1");
+            natanLectureContract.listedTeachers(teacher1).then((res) => {
+                assert.equal(res.toNumber(), 2);
+            });
+        });
+
+        it('should FAIL to sign in if already registered', async() => {
+            try {
+                await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1");
+            } catch (error) {
+                return true;
+            }
+            throw new Error("I should never see this!")
+        });
+
+        it('should FAIL to sign in with invalid address', async() => {
+            try {
+                await natanLectureContract.registerTeacher(0, "teacher1", "teacher1", "region1", "topic1");
+            } catch (error) {
+                return true;
+            }
+            throw new Error("I should never see this!")
+        });
     });
 /*
     describe("Whitelist/Blacklist teacher", async () => {
