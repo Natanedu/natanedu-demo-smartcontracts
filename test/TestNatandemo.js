@@ -151,22 +151,19 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         });
     });
 
-    /*describe("Whitelist/Blacklist student", async () => {
+    describe("Whitelist/Blacklist student", async () => {
 
         it("Whitelist a student", async () => {
             await natanLectureContract.whiteListStudent(student1, {from: admin});
-            natanLectureContract.whiteListedStudent(student1).then((res) => {
-                assert.equal(res, true);
+            natanLectureContract.listedStudents(student1).then((res) => {
+                assert.equal(res, 3);
             });
         });
 
         it("Blacklist a student", async () => {
             await natanLectureContract.blackListStudent(student1, {from: admin});
-            natanLectureContract.blackListedStudent(student1).then((res1) => {
-                natanLectureContract.whiteListedStudent(student1).then((res2) => {
-                    assert.equal(res1, true);
-                    assert.equal(res2, false);
-                });
+            natanLectureContract.listedStudents(student1).then((res) => {
+                assert.equal(res, 1);
             });
         });
 
@@ -216,7 +213,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         });
 
     });
-
+/*
     describe("Whitelist/Blacklist teacher", async () => {
 
         it("Whitelist a teacher", async () => {
