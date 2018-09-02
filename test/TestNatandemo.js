@@ -241,23 +241,20 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             throw new Error("I should never see this!")
         });
     });
-/*
+
     describe("Whitelist/Blacklist teacher", async () => {
 
         it("Whitelist a teacher", async () => {
             await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
-            natanLectureContract.whiteListedTeacher(teacher1).then((res) => {
-                assert.equal(res, true);
+            natanLectureContract.listedTeachers(teacher1).then((res) => {
+                assert.equal(res, 3);
             });
         });
 
         it("Blacklist a teacher", async () => {
             await natanLectureContract.blackListTeacher(teacher1, {from: admin});
-            natanLectureContract.blackListedTeacher(teacher1).then((res1) => {
-                natanLectureContract.whiteListedTeacher(teacher1).then((res2) => {
-                    assert.equal(res1, true);
-                    assert.equal(res2, false);
-                });
+            natanLectureContract.listedTeachers(teacher1).then((res) => {
+                assert.equal(res, 1);
             });
         });
 
@@ -306,7 +303,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             throw new Error("I should never see this!")
         });
 
-    });*/
+    });
 
     /*describe("Lecture", async () => {
 
