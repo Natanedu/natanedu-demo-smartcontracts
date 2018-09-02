@@ -14,6 +14,7 @@ contract NatanTeacher is Control {
     event Transfer(address indexed teacher);
     event TeacherWhitelisted(address indexed teacher);
     event TeacherBlacklisted(address indexed teacher);
+    event RegisteredTeacher(address indexed teacher);
 
     struct Teacher {
         string firstName;
@@ -34,7 +35,27 @@ contract NatanTeacher is Control {
     mapping(address => uint) public listedTeachers;      
 
     //Teacher balance
-    mapping(address => uint) public teacherBalance;             
+    mapping(address => uint) public teacherBalance; 
+
+    /**
+     * @dev function to register teacher
+     * @param _add teacher address
+     * @param _name teacher name
+     * @param _lastName teacher last name
+     * @param _region teacher region
+     * @param _topic teacher topic
+     */
+    function registerTeacher(address _add, string _name, string _lastName, string _region, string _topic) public {
+        require(_add != address(0), "Invalid address");
+        require(listedTeachers[_add] == 0, "Teacher already registered");
+
+        //add teacher
+        teachers[_add] = Teacher(_name, _lastName, _region, _topic);
+        //mark teacher listing in progress
+        listedTeachers[_add] = 2;
+
+        emit RegisteredTeacher(_add);
+    }            
     
     /**
      * @dev function to whitelist a teacher
