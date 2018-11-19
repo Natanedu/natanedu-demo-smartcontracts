@@ -35,7 +35,7 @@ contract NatanTeacher is Control {
     mapping(address => uint) public listedTeachers;      
 
     //Teacher balance
-    mapping(address => uint) public teacherBalance; 
+    mapping(address => uint256) public teacherBalance; 
 
     /**
      * @dev function to register teacher

@@ -16,7 +16,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     event lecturePaid(address indexed teacher, address indexed student, uint256 lectureId);    
 
-    mapping(uint => mapping(address => bool)) paidLecture;     //mapping lecture id to address who payed for it
+    mapping(uint => mapping(address => bool)) paidLecture;      //mapping lecture id to address who payed for it
     mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
     mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
 
