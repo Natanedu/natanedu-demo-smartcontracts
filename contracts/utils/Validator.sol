@@ -1,11 +1,15 @@
 pragma solidity ^0.4.4;
 
-
+/** @title Validator */
 contract Validator {
 
+    ///@notice list of used nonces
     mapping(uint256 => bool) usedNonces;
 
-    // Builds a prefixed hash to mimic the behavior of eth_sign.
+    /**
+     * @dev generate a prefixed hash to mimic the behavior of eth_sign
+     * @param hash hashed message
+     */
     function prefixed(bytes32 hash) internal pure returns (bytes32) {
         return keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", hash));
     }
@@ -46,6 +50,7 @@ contract Validator {
     /**
      * @dev Function to split the signature
      * @param sig the signature
+     * @return bytes
      */
     function splitSignature(bytes sig) internal pure returns (uint8, bytes32, bytes32) {
         require(sig.length == 65, "invalid signature length");

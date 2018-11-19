@@ -1,21 +1,17 @@
 pragma solidity ^0.4.4;
 
 
-/**
- * @title Control
- * @dev The controle contract has multiple owners addresses, and provides basic authorization 
- * control functions, this simplifies the implementation of "user permissions".
- */
+/** @title Control */
 contract Control {
 
+    ///@notice list of owners
     mapping(address => bool) public owners;
 
     event OwnershipRenounced(address indexed previousOwner);
     event OwnershipTransferred(address indexed previousOwner, address indexed newOwner);
 
     /**
-     * @dev The Control constructor sets the original `owner` of the contract to the sender
-     * account.
+     * @dev The Control constructor sets the original `owner` of the contract to the sender account.
      */
     constructor() public {
         owners[msg.sender] = true;

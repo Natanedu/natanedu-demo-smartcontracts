@@ -1,15 +1,11 @@
 pragma solidity ^0.4.4;
 
-
 import "./utils/Control.sol";
 
-/**
- * @title NatanAdmin
- * @dev The NatanAdmin contract has all the functions related to the admins of Natanedu platform
- */
+/** @title NatanAdmin */
 contract NatanAdmin is Control {
 
-    /**
+    /** 
      * @dev add new admin
      * @param _newAllowed address of the new admin    
      */

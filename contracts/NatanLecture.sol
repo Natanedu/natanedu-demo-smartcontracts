@@ -1,32 +1,37 @@
 pragma solidity ^0.4.4;
 
-
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./NatanStudent.sol";
 import "./NatanTeacher.sol";
 
-/**
- * @title NatanLecture
- */
+/** @title NatanLecture */
 contract NatanLecture is NatanStudent, NatanTeacher {
 
     using SafeMath for uint256;
 
+    ///@notice lecture id counter
     uint256 public lecturesId = 0; 
+
+    ///@notice list of paid lectures
+    mapping(uint => mapping(address => bool)) paidLecture; 
+    ///@notice list of recorded lectures on IPFS    
+    mapping(uint => bytes) recordedLecture;             
+    ///@notice list of lectures owners       
+    mapping(uint => mapping(address => bool)) accessLecture;
 
     event lecturePaid(address indexed teacher, address indexed student, uint256 lectureId);    
 
-    mapping(uint => mapping(address => bool)) paidLecture;      //mapping lecture id to address who payed for it
-    mapping(uint => bytes) recordedLecture;                     //mapping lecture id to it's IPFS hash
-    mapping(uint => mapping(address => bool)) accessLecture;    //mapping lecture id to address who have access to it
-
+    /**
+     * @dev generate lecture id
+     * @return lecturesId lecture id
+     */
     function generateLectureId() public returns (uint256) {
         lecturesId = lecturesId.add(1);
         return lecturesId;
     }
 
     /**
-     * @dev function to pay for lecture
+     * @dev pay for lecture
      * @param _lectureId id of lecture
      * @param _lecturePrice price of lecture
      * @param _teacher address of the lecture's teacher
@@ -43,7 +48,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
     }
 
     /**
-     * @dev function to save IPFS hash of a recorded lecture
+     * @dev store IPFS hash of a recorded lecture
      * @param _lectureId id of lecture
      * @param _ipfsHash IPFS hash
      */
@@ -54,7 +59,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
     }
 
     /**
-     * @dev function to get IPFS hash of a recorded lecture
+     * @dev get IPFS hash of a recorded lecture
      * @param _lectureId id of lecture
      * @return IPFS hash
      */
@@ -64,7 +69,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
     }
 
     /**
-     * @dev function to tranfer money to specified teacher address
+     * @dev tranfer money to specified teacher address
      * @param _amount amount to transfer in Wei
      */
     function transfer(uint _amount) public {

@@ -4,18 +4,12 @@ pragma solidity ^0.4.4;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./utils/Control.sol";
 
-/**
- * @title NatanTeacher
- */
+/** @title NatanTeacher */
 contract NatanTeacher is Control {
 
     using SafeMath for uint256;
 
-    event Transfer(address indexed teacher);
-    event TeacherWhitelisted(address indexed teacher);
-    event TeacherBlacklisted(address indexed teacher);
-    event RegisteredTeacher(address indexed teacher);
-
+    ///@notice teacher structure
     struct Teacher {
         string firstName;
         string lastName;
@@ -23,22 +17,22 @@ contract NatanTeacher is Control {
         string topic;
     }
 
-    //List of teachers
+    ///@notice List of teachers
     mapping(address => Teacher) public teachers; 
 
-    /** 
-     * Listed teachers:
-     * 1 = blacklisted
-     * 2 = in process
-     * 3 = whitelisted  
-     */ 
+    ///@notice list of listed teachers: 1=blacklisted, 2=in process, 3=whitelisted
     mapping(address => uint) public listedTeachers;      
 
-    //Teacher balance
+    ///@notice list of teacher's balance
     mapping(address => uint256) public teacherBalance; 
 
+    event Transfer(address indexed teacher);
+    event TeacherWhitelisted(address indexed teacher);
+    event TeacherBlacklisted(address indexed teacher);
+    event RegisteredTeacher(address indexed teacher);
+
     /**
-     * @dev function to register teacher
+     * @dev register teacher
      * @param _add teacher address
      * @param _name teacher name
      * @param _lastName teacher last name
@@ -58,7 +52,7 @@ contract NatanTeacher is Control {
     }            
     
     /**
-     * @dev function to whitelist a teacher
+     * @dev whitelist a teacher
      * @param _teacherAdd address of teacher
      */
     function whiteListTeacher(address _teacherAdd) external onlyOwner {
@@ -73,7 +67,7 @@ contract NatanTeacher is Control {
     }
 
     /**
-     * @dev function to blacklist a teacher
+     * @dev blacklist a teacher
      * @param _teacherAdd address of teacher
      */
     function blackListTeacher(address _teacherAdd) external onlyOwner {
@@ -89,7 +83,7 @@ contract NatanTeacher is Control {
     }
 
     /**
-     * @dev function to withdraw money
+     * @dev withdraw money
      * @param _teacher teacher address
      * @param _amount amount to transfer in Wei
      */
