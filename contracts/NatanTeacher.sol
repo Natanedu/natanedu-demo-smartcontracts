@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.0;
 
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
@@ -39,7 +39,7 @@ contract NatanTeacher is Control {
      * @param _region teacher region
      * @param _topic teacher topic
      */
-    function registerTeacher(address _add, string _name, string _lastName, string _region, string _topic) public {
+    function registerTeacher(address _add, string memory _name, string memory _lastName, string memory _region, string memory _topic) public {
         require(_add != address(0), "Invalid address");
         require(listedTeachers[_add] == 0, "Teacher already registered");
 
@@ -87,7 +87,7 @@ contract NatanTeacher is Control {
      * @param _teacher teacher address
      * @param _amount amount to transfer in Wei
      */
-    function withdraw(address _teacher, uint _amount) internal {
+    function withdraw(address payable _teacher, uint _amount) internal {
         _teacher.transfer(_amount);
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
 

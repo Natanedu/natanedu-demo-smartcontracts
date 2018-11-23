@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./NatanStudent.sol";
@@ -52,7 +52,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
      * @param _lectureId id of lecture
      * @param _ipfsHash IPFS hash
      */
-    function saveRecordedLecture(uint _lectureId, bytes _ipfsHash) internal {
+    function saveRecordedLecture(uint _lectureId, bytes memory _ipfsHash) internal {
         recordedLecture[_lectureId] = _ipfsHash;
         //restrict lecture access
         accessLecture[_lectureId][msg.sender] = true;
@@ -63,7 +63,7 @@ contract NatanLecture is NatanStudent, NatanTeacher {
      * @param _lectureId id of lecture
      * @return IPFS hash
      */
-    function getRecordedLecture(uint _lectureId) internal view returns(bytes) {
+    function getRecordedLecture(uint _lectureId) internal view returns(bytes memory) {
         require(accessLecture[_lectureId][msg.sender], "no permission to access this lecture");
         return recordedLecture[_lectureId];
     }

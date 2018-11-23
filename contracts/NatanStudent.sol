@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.0;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./utils/Control.sol";
@@ -28,7 +28,7 @@ contract NatanStudent is Control {
      * @param _name student name
      * @param _lastName student last name
      */
-    function registerStudent(address _add, string _name, string _lastName) public {
+    function registerStudent(address _add, string memory _name, string memory _lastName) public {
         require(_add != address(0), "Invalid address");
         require(listedStudents[_add] == 0, "Student already registered");
 
