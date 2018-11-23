@@ -58,7 +58,7 @@ contract NatanTeacher is Control {
     function whiteListTeacher(address _teacherAdd) external onlyOwner {
         //require valid address
         require(_teacherAdd != address(0), "Invalid address");
-        require(listedTeachers[_teacherAdd] == 2, "Teacher not found!");
+        require((listedTeachers[_teacherAdd] == 1) || (listedTeachers[_teacherAdd] == 2), "Teacher not found!");
         
         //whitelist teacher
         listedTeachers[_teacherAdd] = 3;
