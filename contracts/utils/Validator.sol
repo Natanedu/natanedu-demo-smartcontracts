@@ -1,4 +1,4 @@
-pragma solidity ^0.4.4;
+pragma solidity ^0.5.0;
 
 /** @title Validator */
 contract Validator {
@@ -20,7 +20,7 @@ contract Validator {
      * @param nonce random number to protect against replay attacks
      * @param sig the signed hash
      */
-    function isSigned(uint _lectureId, uint256 nonce, bytes sig) public {
+    function isSigned(uint _lectureId, uint256 nonce, bytes memory sig) public {
         require(!usedNonces[nonce], "replayed message");
         usedNonces[nonce] = true;
 
@@ -36,7 +36,7 @@ contract Validator {
      * @param sig the signature
      * @return signer address
      */
-    function recoverSigner(bytes32 message, bytes sig) internal pure returns (address) {
+    function recoverSigner(bytes32 message, bytes memory sig) internal pure returns (address) {
         
         uint8 v;
         bytes32 r;
@@ -52,7 +52,7 @@ contract Validator {
      * @param sig the signature
      * @return bytes
      */
-    function splitSignature(bytes sig) internal pure returns (uint8, bytes32, bytes32) {
+    function splitSignature(bytes memory sig) internal pure returns (uint8, bytes32, bytes32) {
         require(sig.length == 65, "invalid signature length");
         
         bytes32 r;
