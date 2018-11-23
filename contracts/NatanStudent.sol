@@ -46,7 +46,7 @@ contract NatanStudent is Control {
      */
     function whiteListStudent(address _studentAdd) external onlyOwner {
         require(_studentAdd != address(0), "Invalid address");
-        require(listedStudents[_studentAdd] == 2, "Student not found!");
+        require((listedStudents[_studentAdd] == 1) || (listedStudents[_studentAdd] == 2), "Student not found!");
 
         listedStudents[_studentAdd] = 3;
 
