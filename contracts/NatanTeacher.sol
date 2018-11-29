@@ -1,4 +1,4 @@
-pragma solidity ^0.5.0;
+pragma solidity 0.4.24;
 
 
 import "./utils/SafeMath.sol";
@@ -87,7 +87,7 @@ contract NatanTeacher is Control {
      * @param _teacher teacher address
      * @param _amount amount to transfer in Wei
      */
-    function withdraw(address payable _teacher, uint _amount) internal {
+    function withdraw(address _teacher, uint _amount) internal {
         _teacher.transfer(_amount);
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
 
