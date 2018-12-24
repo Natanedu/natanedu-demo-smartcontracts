@@ -278,6 +278,35 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     });
 
+    describe("Get teachers by topic", async() => {
+        before(async() => {
+            //list of teachers to add and whitelist
+            teacher5 = accounts[5];
+            teacher6 = accounts[6];
+            teacher7 = accounts[7];
+            teacher8 = accounts[8];
+            teacher9 = accounts[9];
+
+            await natanLectureContract.registerTeacher(teacher5, "teacher5", "teacher5", "region5", "Blockchain");
+            await natanLectureContract.registerTeacher(teacher6, "teacher6", "teacher6", "region6", "Blockchain");
+            await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain");
+            await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI");
+            await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI");
+
+            await natanLectureContract.whiteListTeacher(teacher5, {from: admin});
+            await natanLectureContract.whiteListTeacher(teacher6, {from: admin});
+            await natanLectureContract.whiteListTeacher(teacher7, {from: admin});
+            await natanLectureContract.whiteListTeacher(teacher8, {from: admin});
+            await natanLectureContract.whiteListTeacher(teacher9, {from: admin});
+        });
+
+        it("Get teachers by topic", async () => {
+            let blockchainTopic = "Blockchain";
+            let teachersByTopic = await natanLectureContract.getByTopic(blockchainTopic);
+            assert(teachersByTopic.length, 3);
+        });        
+    });
+
     describe("Lecture", async () => {
 
         let lectureId = 0;

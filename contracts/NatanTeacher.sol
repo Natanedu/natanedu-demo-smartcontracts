@@ -18,7 +18,10 @@ contract NatanTeacher is Control {
     }
 
     ///@notice List of teachers
-    mapping(address => Teacher) public teachers; 
+    mapping(address => Teacher) public teachers;
+
+    ///
+    address[] public teachersAddress; 
 
     ///@notice list of listed teachers: 1=blacklisted, 2=in process, 3=whitelisted
     mapping(address => uint) public listedTeachers;      
@@ -45,6 +48,8 @@ contract NatanTeacher is Control {
 
         //add teacher
         teachers[_add] = Teacher(_name, _lastName, _region, _topic);
+        //save teacher address
+        teachersAddress.push(_add);
         //mark teacher listing in progress
         listedTeachers[_add] = 2;
 
@@ -92,6 +97,20 @@ contract NatanTeacher is Control {
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
 
         emit Transfer(_teacher);
+    }
+
+    /**
+     * @dev 
+     */
+    function getByTopic(string _topic) external view returns(address[]) {
+        address[] storage teacherByTopic;
+        for(uint i = 0; i < teachersAddress.length; i++) {
+            Teacher memory t = teachers[teachersAddress[i]];
+            if(keccak256(abi.encodePacked(t.topic)) == keccak256(abi.encodePacked(_topic))) {
+                teacherByTopic.push(teachersAddress[i]);
+            }
+        }
+        return teacherByTopic;
     }
 
 }
