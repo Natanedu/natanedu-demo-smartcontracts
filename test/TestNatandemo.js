@@ -303,7 +303,14 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         it("Get teachers by topic", async () => {
             let blockchainTopic = "Blockchain";
             let teachersByTopic = await natanLectureContract.getByTopic(blockchainTopic);
-            assert(teachersByTopic.length, 3);
+
+            let validAddressCounter = 0;
+            for(let i = 0; i < teachersByTopic.length; i++) {
+                if(teachersByTopic[i] != "0x0000000000000000000000000000000000000000") {
+                    validAddressCounter++;
+                }
+            }
+            assert(validAddressCounter, 3);
         });        
     });
 

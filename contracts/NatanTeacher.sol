@@ -100,14 +100,18 @@ contract NatanTeacher is Control {
     }
 
     /**
-     * @dev 
+     * @dev function that return teachers address for a specific topic
+     * @param _topic specific topic
+     * @return list of teachers addresses
      */
     function getByTopic(string _topic) external view returns(address[]) {
-        address[] storage teacherByTopic;
+        address[] memory teacherByTopic = new address[](teachersAddress.length);
+        uint counter = 0;
         for(uint i = 0; i < teachersAddress.length; i++) {
             Teacher memory t = teachers[teachersAddress[i]];
             if(keccak256(abi.encodePacked(t.topic)) == keccak256(abi.encodePacked(_topic))) {
-                teacherByTopic.push(teachersAddress[i]);
+                teacherByTopic[counter] = teachersAddress[i];
+                counter++;
             }
         }
         return teacherByTopic;
