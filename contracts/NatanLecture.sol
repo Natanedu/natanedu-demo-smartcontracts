@@ -41,8 +41,14 @@ contract NatanLecture is NatanStudent, NatanTeacher {
         require(_teacher != address(0), "invalid teacher address");
         require(listedTeachers[_teacher] == 3, "teacher not found");
 
+        //Mark lecture paid by student
         paidLecture[_lectureId][msg.sender] = true;
-        teacherBalance[_teacher] += msg.value;
+        //Natanedu 3% fee per lecture
+        uint natanFee = (msg.value * 3) / 100;
+        //Transfer fee to smart contract
+        address(this).transfer(natanFee);
+        //Transfer 97% to teacher balance
+        teacherBalance[_teacher] += msg.value - natanFee;
 
         emit lecturePaid(_teacher, msg.sender, _lectureId);
     }
