@@ -45,8 +45,6 @@ contract NatanLecture is NatanStudent, NatanTeacher {
         paidLecture[_lectureId][msg.sender] = true;
         //Natanedu 3% fee per lecture
         uint natanFee = (msg.value * 3) / 100;
-        //Transfer fee to smart contract
-        address(this).transfer(natanFee);
         //Transfer 97% to teacher balance
         teacherBalance[_teacher] += msg.value - natanFee;
 
