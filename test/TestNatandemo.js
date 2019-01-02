@@ -321,6 +321,8 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         before(async() => {
             //whitelist student
             await natanLectureContract.whiteListStudent(student1, {from: admin});
+            //whitelist teacher
+            await await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
         });
 
         it("generate lecture id", async () => {
@@ -330,6 +332,18 @@ contract('Natan Demo Smart Contracts', (accounts) => {
                 lectureId = res.toNumber();
                 assert.equal(lectureId, 1);
             });
+        });
+
+        it("pay for lecture", async () => {
+            let lecturePrice = 45; //in Wei
+            let lectureId = await natanLectureContract.lecturesId.call();
+
+            await natanLectureContract.payLecture(lectureId.toNumber(), lecturePrice, teacher1, {from: student1, value: lecturePrice});            
+            let contractBalance = await web3.eth.getBalance(natanLectureContract.address);
+            let teacherBalance = await natanLectureContract.teacherBalance(teacher1);
+
+            assert.equal(contractBalance.toNumber(), lecturePrice);
+            assert.equal(teacherBalance.toNumber(), Math.round(lecturePrice-((lecturePrice*3)/100)));
         });
     });
 
