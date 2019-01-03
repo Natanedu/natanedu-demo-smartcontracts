@@ -1,7 +1,7 @@
 Using network 'ropsten'.
 
-  NatanAdmin: 0xbfe33de73578fc4fd36bf9a381d9c0fc600fc9a0
+  NatanAdmin:   0xf98e96967487ffb1a01458a762791f991a06281c
 
-  NatanLecture: 0x75f79a47c15babb8f9cedd818e04b112fdcafc6e
+  NatanLecture: 0xd658b2de84f32ebea598ba6505640edf4455c8af
 
-  Validator: 0xdd9b79269ae173c7f04707afa91664bb0585046a
+  Validator:    0x2c2ad8f6efb2ebf29455162bd0ca1f29e8466c08
