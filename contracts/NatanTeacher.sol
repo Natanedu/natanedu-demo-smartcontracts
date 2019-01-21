@@ -15,6 +15,7 @@ contract NatanTeacher is Control {
         string lastName;
         string region; 
         string topic;
+        string language;
     }
 
     ///@notice List of teachers
@@ -42,12 +43,19 @@ contract NatanTeacher is Control {
      * @param _region teacher region
      * @param _topic teacher topic
      */
-    function registerTeacher(address _add, string memory _name, string memory _lastName, string memory _region, string memory _topic) public {
+    function registerTeacher(
+        address _add, 
+        string memory _name, 
+        string memory _lastName, 
+        string memory _region, 
+        string memory _topic, 
+        string memory _language
+    ) public {
         require(_add != address(0), "Invalid address");
         require(listedTeachers[_add] == 0, "Teacher already registered");
 
         //add teacher
-        teachers[_add] = Teacher(_name, _lastName, _region, _topic);
+        teachers[_add] = Teacher(_name, _lastName, _region, _topic, _language);
         //save teacher address
         teachersAddress.push(_add);
         //mark teacher listing in progress
