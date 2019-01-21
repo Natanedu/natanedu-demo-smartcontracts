@@ -143,5 +143,23 @@ contract NatanTeacher is Control {
         return teacherByLanguage;
     }
 
+    /**
+     * @dev function that return teachers address for a specific region
+     * @param _region specific region
+     * @return list of teachers addresses
+     */
+    function getByRegion(string _region) external view returns(address[]) {
+        address[] memory teacherByRegion = new address[](teachersAddress.length);
+        uint counter = 0;
+        for(uint i = 0; i < teachersAddress.length; i++) {
+            Teacher memory t = teachers[teachersAddress[i]];
+            if(keccak256(abi.encodePacked(t.region)) == keccak256(abi.encodePacked(_region))) {
+                teacherByRegion[counter] = teachersAddress[i];
+                counter++;
+            }
+        }
+        return teacherByRegion;
+    }
+
 
 }
