@@ -125,4 +125,23 @@ contract NatanTeacher is Control {
         return teacherByTopic;
     }
 
+    /**
+     * @dev function that return teachers address for a specific language
+     * @param _language specific language
+     * @return list of teachers addresses
+     */
+    function getByLanguage(string _language) external view returns(address[]) {
+        address[] memory teacherByLanguage = new address[](teachersAddress.length);
+        uint counter = 0;
+        for(uint i = 0; i < teachersAddress.length; i++) {
+            Teacher memory t = teachers[teachersAddress[i]];
+            if(keccak256(abi.encodePacked(t.language)) == keccak256(abi.encodePacked(_language))) {
+                teacherByLanguage[counter] = teachersAddress[i];
+                counter++;
+            }
+        }
+        return teacherByLanguage;
+    }
+
+
 }
