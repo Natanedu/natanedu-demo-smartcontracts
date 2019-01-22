@@ -190,7 +190,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
     describe("Register teacher", async () => {
 
         it("teacher sign in", async () => {
-            await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1");
+            await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1");
             natanLectureContract.listedTeachers(teacher1).then((res) => {
                 assert.equal(res.toNumber(), 2);
             });
@@ -198,7 +198,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to sign in if already registered', async() => {
             try {
-                await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1");
+                await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1");
             } catch (error) {
                 return true;
             }
@@ -207,7 +207,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to sign in with invalid address', async() => {
             try {
-                await natanLectureContract.registerTeacher(0, "teacher1", "teacher1", "region1", "topic1");
+                await natanLectureContract.registerTeacher(0, "teacher1", "teacher1", "region1", "topic1", "lang1");
             } catch (error) {
                 return true;
             }
@@ -278,7 +278,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     });
 
-    describe("Get teachers by topic", async() => {
+    describe("Teachers filters", async() => {
         before(async() => {
             //list of teachers to add and whitelist
             teacher5 = accounts[5];
@@ -311,7 +311,11 @@ contract('Natan Demo Smart Contracts', (accounts) => {
                 }
             }
             assert(validAddressCounter, 3);
-        });        
+        });     
+        
+        it("Get teachers by language", async() => {
+
+        });
     });
 
     describe("Lecture", async () => {
