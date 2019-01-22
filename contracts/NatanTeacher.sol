@@ -1,4 +1,4 @@
-pragma solidity 0.4.24;
+pragma solidity ^0.5.0;
 
 
 import "./utils/SafeMath.sol";
@@ -13,7 +13,7 @@ contract NatanTeacher is Control {
     struct Teacher {
         string firstName;
         string lastName;
-        string region; 
+        string region;
         string topic;
         string language;
     }
@@ -22,13 +22,13 @@ contract NatanTeacher is Control {
     mapping(address => Teacher) public teachers;
 
     ///
-    address[] public teachersAddress; 
+    address[] public teachersAddress;
 
     ///@notice list of listed teachers: 1=blacklisted, 2=in process, 3=whitelisted
-    mapping(address => uint) public listedTeachers;      
+    mapping(address => uint) public listedTeachers;
 
     ///@notice list of teacher's balance
-    mapping(address => uint256) public teacherBalance; 
+    mapping(address => uint256) public teacherBalance;
 
     event Transfer(address indexed teacher);
     event TeacherWhitelisted(address indexed teacher);
@@ -44,11 +44,11 @@ contract NatanTeacher is Control {
      * @param _topic teacher topic
      */
     function registerTeacher(
-        address _add, 
-        string memory _name, 
-        string memory _lastName, 
-        string memory _region, 
-        string memory _topic, 
+        address _add,
+        string memory _name,
+        string memory _lastName,
+        string memory _region,
+        string memory _topic,
         string memory _language
     ) public {
         require(_add != address(0), "Invalid address");
@@ -62,8 +62,8 @@ contract NatanTeacher is Control {
         listedTeachers[_add] = 2;
 
         emit RegisteredTeacher(_add);
-    }            
-    
+    }
+
     /**
      * @dev whitelist a teacher
      * @param _teacherAdd address of teacher
@@ -72,7 +72,7 @@ contract NatanTeacher is Control {
         //require valid address
         require(_teacherAdd != address(0), "Invalid address");
         require((listedTeachers[_teacherAdd] == 1) || (listedTeachers[_teacherAdd] == 2), "Teacher not found!");
-        
+
         //whitelist teacher
         listedTeachers[_teacherAdd] = 3;
 
@@ -88,7 +88,7 @@ contract NatanTeacher is Control {
         require(_teacherAdd != address(0), "Invalid address");
         //require that teacher is already whitelisted or in process
         require((listedTeachers[_teacherAdd] == 3) || (listedTeachers[_teacherAdd] == 2), "Teacher is not available");
-        
+
         //blacklist teacher
         listedTeachers[_teacherAdd] = 1;
 
@@ -100,7 +100,7 @@ contract NatanTeacher is Control {
      * @param _teacher teacher address
      * @param _amount amount to transfer in Wei
      */
-    function withdraw(address _teacher, uint _amount) internal {
+    function withdraw(address payable _teacher, uint _amount) internal {
         _teacher.transfer(_amount);
         teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
 
@@ -112,7 +112,7 @@ contract NatanTeacher is Control {
      * @param _topic specific topic
      * @return list of teachers addresses
      */
-    function getByTopic(string _topic) external view returns(address[]) {
+    function getByTopic(string calldata _topic) external view returns(address[] memory) {
         address[] memory teacherByTopic = new address[](teachersAddress.length);
         uint counter = 0;
         for(uint i = 0; i < teachersAddress.length; i++) {
@@ -130,7 +130,7 @@ contract NatanTeacher is Control {
      * @param _language specific language
      * @return list of teachers addresses
      */
-    function getByLanguage(string _language) external view returns(address[]) {
+    function getByLanguage(string calldata _language) external view returns(address[] memory) {
         address[] memory teacherByLanguage = new address[](teachersAddress.length);
         uint counter = 0;
         for(uint i = 0; i < teachersAddress.length; i++) {
@@ -148,7 +148,7 @@ contract NatanTeacher is Control {
      * @param _region specific region
      * @return list of teachers addresses
      */
-    function getByRegion(string _region) external view returns(address[]) {
+    function getByRegion(string calldata _region) external view returns(address[] memory) {
         address[] memory teacherByRegion = new address[](teachersAddress.length);
         uint counter = 0;
         for(uint i = 0; i < teachersAddress.length; i++) {
@@ -167,14 +167,14 @@ contract NatanTeacher is Control {
      * @param _language specific language
      * @return list of teachers addresses
      */
-    function getByTopicLanguage(string _topic, string _language) external view returns(address[]) {
+    function getByTopicLanguage(string calldata _topic, string calldata _language) external view returns(address[] memory) {
         address[] memory teachersByTopicAndLanguage = new address[](teachersAddress.length);
         uint counter = 0;
         for(uint i = 0; i < teachersAddress.length; i++) {
             Teacher memory t = teachers[teachersAddress[i]];
             if(
                 (keccak256(abi.encodePacked(t.topic)) == keccak256(abi.encodePacked(_topic))) &&
-                (keccak256(abi.encodePacked(t.language)) == keccak256(abi.encodePacked(_language))) 
+                (keccak256(abi.encodePacked(t.language)) == keccak256(abi.encodePacked(_language)))
             ) {
                 teachersByTopicAndLanguage[counter] = teachersAddress[i];
                 counter++;
