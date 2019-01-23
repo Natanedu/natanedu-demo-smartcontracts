@@ -287,11 +287,11 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             teacher8 = accounts[8];
             teacher9 = accounts[9];
 
-            await natanLectureContract.registerTeacher(teacher5, "teacher5", "teacher5", "region5", "Blockchain");
-            await natanLectureContract.registerTeacher(teacher6, "teacher6", "teacher6", "region6", "Blockchain");
-            await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain");
-            await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI");
-            await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI");
+            await natanLectureContract.registerTeacher(teacher5, "teacher5", "teacher5", "region5", "Blockchain", "english");
+            await natanLectureContract.registerTeacher(teacher6, "teacher6", "teacher6", "region6", "Blockchain", "english");
+            await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain", "arabic");
+            await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI", "spanish");
+            await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI", "spanish");
 
             await natanLectureContract.whiteListTeacher(teacher5, {from: admin});
             await natanLectureContract.whiteListTeacher(teacher6, {from: admin});
@@ -314,7 +314,30 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         });     
         
         it("Get teachers by language", async() => {
+            let lang = "english";
+            let teachersByLanguage = await natanLectureContract.getByLanguage(lang);
 
+            let validAddressCounter = 0;
+            for(let i = 0; i < teachersByLanguage.length; i++) {
+                if(teachersByLanguage[i] != "0x0000000000000000000000000000000000000000") {
+                    validAddressCounter++;
+                }
+            }
+            assert(validAddressCounter, 2);
+        });
+
+        it("Get teachers by topic and language", async() => {
+            let topic = "Blockchain"
+            let lang = "arabic";
+            let teachersByLanguage = await natanLectureContract.getByTopicLanguage(topic, lang);
+
+            let validAddressCounter = 0;
+            for(let i = 0; i < teachersByLanguage.length; i++) {
+                if(teachersByLanguage[i] != "0x0000000000000000000000000000000000000000") {
+                    validAddressCounter++;
+                }
+            }
+            assert(validAddressCounter, 1);
         });
     });
 
@@ -346,7 +369,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             let contractBalance = await web3.eth.getBalance(natanLectureContract.address);
             let teacherBalance = await natanLectureContract.teacherBalance(teacher1);
 
-            assert.equal(contractBalance.toNumber(), lecturePrice);
+            assert.equal(contractBalance, lecturePrice);
             assert.equal(teacherBalance.toNumber(), Math.round(lecturePrice-((lecturePrice*3)/100)));
         });
     });
