@@ -213,6 +213,12 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             }
             throw new Error("I should never see this!")
         });
+
+        it("shoulg get teacher informations", async () => {
+            await natanLectureContract.teachers(teacher1).then((res) => {
+                console.log(res);
+            });
+        });
     });
 
     describe("Whitelist/Blacklist teacher", async () => {

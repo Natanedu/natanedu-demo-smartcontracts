@@ -16,6 +16,8 @@ contract NatanTeacher is Control {
         string region;
         string topic;
         string language;
+        uint256 minPrice;
+        uint256 maxPrice;
     }
 
     ///@notice List of teachers
@@ -49,13 +51,15 @@ contract NatanTeacher is Control {
         string memory _lastName,
         string memory _region,
         string memory _topic,
-        string memory _language
+        string memory _language,
+        uint256 _minPrice,
+        uint256 _maxPrice
     ) public {
         require(_add != address(0), "Invalid address");
         require(listedTeachers[_add] == 0, "Teacher already registered");
 
         //add teacher
-        teachers[_add] = Teacher(_name, _lastName, _region, _topic, _language);
+        teachers[_add] = Teacher(_name, _lastName, _region, _topic, _language, _minPrice, _maxPrice);
         //save teacher address
         teachersAddress.push(_add);
         //mark teacher listing in progress
