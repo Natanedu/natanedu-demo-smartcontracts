@@ -36,19 +36,19 @@ contract NatanLecture is NatanStudent, NatanTeacher {
      * @param _lecturePrice price of lecture
      * @param _teacher address of the lecture's teacher
      */
-    function payLecture(uint _lectureId, uint _lecturePrice, address _teacher) public payable {
+    function payLecture(uint _lectureId, uint _lecturePrice,address _student, address _teacher) public payable {
         require(msg.value == _lecturePrice, "insufficient amount of ether for lecture price");
         require(_teacher != address(0), "invalid teacher address");
         require(listedTeachers[_teacher] == 3, "teacher not found");
 
         //Mark lecture paid by student
-        paidLecture[_lectureId][msg.sender] = true;
+        paidLecture[_lectureId][_student] = true;
         //Natanedu 3% fee per lecture
         uint natanFee = (msg.value * 3) / 100;
         //Transfer 97% to teacher balance
         teacherBalance[_teacher] += msg.value - natanFee;
 
-        emit lecturePaid(_teacher, msg.sender, _lectureId);
+        emit lecturePaid(_teacher, _student, _lectureId);
     }
 
     /**
