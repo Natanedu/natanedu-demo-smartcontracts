@@ -169,5 +169,13 @@ contract NatanTeacher is Control {
         return teachersByTopicAndLanguage;
     }
 
+    /**
+     * @dev function that return number of teachers registered
+     * @return number of teachers
+     */
+    function getTeachersCount() external view returns (uint256) {
+        return teachersAddress.length;
+    }
+
 
 }
