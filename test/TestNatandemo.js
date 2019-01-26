@@ -190,7 +190,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
     describe("Register teacher", async () => {
 
         it("teacher sign in", async () => {
-            await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1");
+            await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1", 1, 10);
             natanLectureContract.listedTeachers(teacher1).then((res) => {
                 assert.equal(res.toNumber(), 2);
             });
@@ -198,7 +198,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to sign in if already registered', async() => {
             try {
-                await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1");
+                await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1", 1, 10);
             } catch (error) {
                 return true;
             }
@@ -207,7 +207,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it('should FAIL to sign in with invalid address', async() => {
             try {
-                await natanLectureContract.registerTeacher(0, "teacher1", "teacher1", "region1", "topic1", "lang1");
+                await natanLectureContract.registerTeacher(0, "teacher1", "teacher1", "region1", "topic1", "lang1", 1, 10);
             } catch (error) {
                 return true;
             }
@@ -216,7 +216,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
         it("shoulg get teacher informations", async () => {
             await natanLectureContract.teachers(teacher1).then((res) => {
-                console.log(res);
+                assert.notStrictEqual(res, undefined);
             });
         });
     });
@@ -293,17 +293,33 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             teacher8 = accounts[8];
             teacher9 = accounts[9];
 
-            await natanLectureContract.registerTeacher(teacher5, "teacher5", "teacher5", "region5", "Blockchain", "english");
-            await natanLectureContract.registerTeacher(teacher6, "teacher6", "teacher6", "region6", "Blockchain", "english");
-            await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain", "arabic");
-            await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI", "spanish");
-            await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI", "spanish");
+            await natanLectureContract.registerTeacher(teacher5, "teacher5", "teacher5", "region5", "Blockchain", "english", 1, 10);
+            await natanLectureContract.registerTeacher(teacher6, "teacher6", "teacher6", "region6", "Blockchain", "english", 1, 10);
+            await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain", "arabic", 1, 10);
+            await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI", "spanish", 1, 10);
+            await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI", "spanish", 1, 10);
 
             await natanLectureContract.whiteListTeacher(teacher5, {from: admin});
             await natanLectureContract.whiteListTeacher(teacher6, {from: admin});
             await natanLectureContract.whiteListTeacher(teacher7, {from: admin});
             await natanLectureContract.whiteListTeacher(teacher8, {from: admin});
             await natanLectureContract.whiteListTeacher(teacher9, {from: admin});
+        });
+
+        it("Get number of teachers", async () => {
+            let teachersNumber = await natanLectureContract.getTeachersCount();
+            assert.equal(teachersNumber.toNumber(), 6);
+        });
+
+        it("Get all teachers", async () => {
+            let retreivedTeachers = [];
+            let teachersNumber = await natanLectureContract.getTeachersCount();
+            for(i=0; i<teachersNumber; i++) {
+                let teacherAddress = await natanLectureContract.teachersAddress(i);
+                let teacher = await natanLectureContract.teachers(teacherAddress);
+                retreivedTeachers.push(teacher);
+            }
+            assert.equal(retreivedTeachers.length, 6);
         });
 
         it("Get teachers by topic", async () => {
@@ -371,13 +387,14 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             let lecturePrice = 45; //in Wei
             let lectureId = await natanLectureContract.lecturesId.call();
 
-            await natanLectureContract.payLecture(lectureId.toNumber(), lecturePrice, teacher1, {from: student1, value: lecturePrice});            
+            await natanLectureContract.payLecture(lectureId.toNumber(), lecturePrice, student1, teacher1, {from: student1, value: lecturePrice});            
             let contractBalance = await web3.eth.getBalance(natanLectureContract.address);
             let teacherBalance = await natanLectureContract.teacherBalance(teacher1);
 
             assert.equal(contractBalance, lecturePrice);
             assert.equal(teacherBalance.toNumber(), Math.round(lecturePrice-((lecturePrice*3)/100)));
         });
+
     });
 
 });
