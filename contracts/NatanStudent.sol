@@ -15,6 +15,8 @@ contract NatanStudent is Control {
     ///@notice list of students
     mapping(address => Student) public students; 
 
+    address[] public studentsAddress;
+
     ///@notice list of listed students: 1=blacklisted, 2=in process, 3=whitelisted 
     mapping(address => uint) public listedStudents;
 
@@ -34,6 +36,8 @@ contract NatanStudent is Control {
 
         //add student
         students[_add] = Student(_name, _lastName);
+        //save student address
+        studentsAddress.push(_add);
         //mark student listing in progress
         listedStudents[_add] = 2;
 
@@ -64,6 +68,14 @@ contract NatanStudent is Control {
         listedStudents[_studentAdd] = 1;
 
         emit StudentBlacklisted(_studentAdd);
+    }
+
+     /**
+     * @dev function that return number of student registered
+     * @return number of students
+     */
+    function getStudentsCount() external view returns (uint256) {
+        return studentsAddress.length;
     }
 
 }
