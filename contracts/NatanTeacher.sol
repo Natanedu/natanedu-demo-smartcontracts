@@ -63,7 +63,7 @@ contract NatanTeacher is Control {
         //save teacher address
         teachersAddress.push(_add);
         //mark teacher listing in progress
-        listedTeachers[_add] = 2;
+        listedTeachers[_add] = 3;
 
         emit RegisteredTeacher(_add);
     }
