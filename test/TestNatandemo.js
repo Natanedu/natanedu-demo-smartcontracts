@@ -126,17 +126,17 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     describe("Whitelist/Blacklist student", async () => {
 
-        it("Whitelist a student", async () => {
-            await natanLectureContract.whiteListStudent(student1, {from: admin});
-            natanLectureContract.listedStudents(student1).then((res) => {
-                assert.equal(res, 3);
-            });
-        });
-
         it("Blacklist a student", async () => {
             await natanLectureContract.blackListStudent(student1, {from: admin});
             natanLectureContract.listedStudents(student1).then((res) => {
                 assert.equal(res, 1);
+            });
+        });
+
+        it("Whitelist a student", async () => {
+            await natanLectureContract.whiteListStudent(student1, {from: admin});
+            natanLectureContract.listedStudents(student1).then((res) => {
+                assert.equal(res, 3);
             });
         });
 
@@ -223,17 +223,17 @@ contract('Natan Demo Smart Contracts', (accounts) => {
 
     describe("Whitelist/Blacklist teacher", async () => {
 
-        it("Whitelist a teacher", async () => {
-            await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
-            natanLectureContract.listedTeachers(teacher1).then((res) => {
-                assert.equal(res, 3);
-            });
-        });
-
         it("Blacklist a teacher", async () => {
             await natanLectureContract.blackListTeacher(teacher1, {from: admin});
             natanLectureContract.listedTeachers(teacher1).then((res) => {
                 assert.equal(res, 1);
+            });
+        });
+
+        it("Whitelist a teacher", async () => {
+            await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
+            natanLectureContract.listedTeachers(teacher1).then((res) => {
+                assert.equal(res, 3);
             });
         });
 
