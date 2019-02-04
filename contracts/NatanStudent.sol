@@ -39,7 +39,7 @@ contract NatanStudent is Control {
         //save student address
         studentsAddress.push(_add);
         //mark student listing in progress
-        listedStudents[_add] = 2;
+        listedStudents[_add] = 3;
 
         emit StudentRegistered(_add);
     }
