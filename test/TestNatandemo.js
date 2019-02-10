@@ -1,6 +1,8 @@
 const NatanAdmin = artifacts.require("NatanAdmin");
 const NatanLecture = artifacts.require("NatanLecture");
 
+const BigNumber = require('bignumber.js');
+
 const logTitle = (title) => {
   console.log("*****************************************");
   console.log(title);
@@ -101,7 +103,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         it("student sign in", async () => {
             await natanLectureContract.registerStudent(student1, "student1", "student1");
             natanLectureContract.listedStudents(student1).then((res) => {
-                assert.equal(res.toNumber(), 2);
+                assert.equal(res.toNumber(), 3);
             });
         });
 
@@ -192,7 +194,7 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         it("teacher sign in", async () => {
             await natanLectureContract.registerTeacher(teacher1, "teacher1", "teacher1", "region1", "topic1", "lang1", 1, 10);
             natanLectureContract.listedTeachers(teacher1).then((res) => {
-                assert.equal(res.toNumber(), 2);
+                assert.equal(res.toNumber(), 3);
             });
         });
 
@@ -298,12 +300,6 @@ contract('Natan Demo Smart Contracts', (accounts) => {
             await natanLectureContract.registerTeacher(teacher7, "teacher7", "teacher7", "region7", "Blockchain", "arabic", 1, 10);
             await natanLectureContract.registerTeacher(teacher8, "teacher8", "teacher8", "region8", "AI", "spanish", 1, 10);
             await natanLectureContract.registerTeacher(teacher9, "teacher9", "teacher9", "region9", "AI", "spanish", 1, 10);
-
-            await natanLectureContract.whiteListTeacher(teacher5, {from: admin});
-            await natanLectureContract.whiteListTeacher(teacher6, {from: admin});
-            await natanLectureContract.whiteListTeacher(teacher7, {from: admin});
-            await natanLectureContract.whiteListTeacher(teacher8, {from: admin});
-            await natanLectureContract.whiteListTeacher(teacher9, {from: admin});
         });
 
         it("Get number of teachers", async () => {
@@ -366,14 +362,8 @@ contract('Natan Demo Smart Contracts', (accounts) => {
     describe("Lecture", async () => {
 
         let lectureId = 0;
+        let teacherBalance;
         
-        before(async() => {
-            //whitelist student
-            await natanLectureContract.whiteListStudent(student1, {from: admin});
-            //whitelist teacher
-            await await natanLectureContract.whiteListTeacher(teacher1, {from: admin});
-        });
-
         it("generate lecture id", async () => {
             //generate lecture idlet
             await natanLectureContract.generateLectureId({from : student1});
@@ -384,15 +374,25 @@ contract('Natan Demo Smart Contracts', (accounts) => {
         });
 
         it("pay for lecture", async () => {
-            let lecturePrice = 45; //in Wei
+            let lecturePrice = web3.utils.toWei("2", "ether"); //in Wei
             let lectureId = await natanLectureContract.lecturesId.call();
 
             await natanLectureContract.payLecture(lectureId.toNumber(), lecturePrice, student1, teacher1, {from: student1, value: lecturePrice});            
             let contractBalance = await web3.eth.getBalance(natanLectureContract.address);
-            let teacherBalance = await natanLectureContract.teacherBalance(teacher1);
+            teacherBalance = await natanLectureContract.teacherBalance(teacher1);
 
             assert.equal(contractBalance, lecturePrice);
-            assert.equal(teacherBalance.toNumber(), Math.round(lecturePrice-((lecturePrice*3)/100)));
+            
+            let percentage = new BigNumber(Math.round(lecturePrice-((lecturePrice*3)/100)));
+            assert.equal(percentage.isEqualTo(teacherBalance), true);
+        });
+
+        it("end lecture", async () => {
+            await natanLectureContract.transfer(teacher1);   
+            let teacherWalletBalance = new BigNumber(await web3.eth.getBalance(teacher1));
+
+            let teacherBalanceAfterTransfer = await natanLectureContract.teacherBalance(teacher1);
+            assert.equal(teacherBalanceAfterTransfer.toString(), "0");
         });
 
     });
