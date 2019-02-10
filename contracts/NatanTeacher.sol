@@ -102,11 +102,11 @@ contract NatanTeacher is Control {
     /**
      * @dev withdraw money
      * @param _teacher teacher address
-     * @param _amount amount to transfer in Wei
      */
-    function withdraw(address payable _teacher, uint _amount) internal {
-        _teacher.transfer(_amount);
-        teacherBalance[_teacher] = teacherBalance[_teacher].sub(_amount);
+    function withdraw(address payable _teacher) internal {
+        uint256 amount = teacherBalance[_teacher];
+        _teacher.transfer(amount);
+        teacherBalance[_teacher] = teacherBalance[_teacher].sub(amount);
 
         emit Transfer(_teacher);
     }

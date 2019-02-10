@@ -74,13 +74,14 @@ contract NatanLecture is NatanStudent, NatanTeacher {
 
     /**
      * @dev tranfer money to specified teacher address
-     * @param _amount amount to transfer in Wei
+     * @param _teacher teacher address
      */
-    function transfer(uint _amount) public {
-        require(listedTeachers[msg.sender] == 3, "Teacher not authorized");
-        require(teacherBalance[msg.sender] >= _amount, "Teacher balance is insufficient");
+    function transfer(address payable _teacher) public {
+        require(_teacher != address(0));
+        require(listedTeachers[_teacher] == 3, "Teacher not authorized");
+        require(teacherBalance[_teacher] > 0, "Teacher balance is zero");
 
-        withdraw(msg.sender, _amount);
+        withdraw(_teacher);
     }
 
 }
